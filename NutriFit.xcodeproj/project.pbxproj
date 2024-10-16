@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07132C9874C3001C3597 /* NutriFitApp.swift */; };
-		095B07162C9874C3001C3597 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07152C9874C3001C3597 /* ContentView.swift */; };
+		095B07162C9874C3001C3597 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07152C9874C3001C3597 /* HomeView.swift */; };
 		095B07182C9874C5001C3597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B07172C9874C5001C3597 /* Assets.xcassets */; };
 		095B071B2C9874C5001C3597 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B071A2C9874C5001C3597 /* Preview Assets.xcassets */; };
+		095B07222C996AF7001C3597 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07212C996AF7001C3597 /* TextExtensions.swift */; };
+		095B07242C9971A1001C3597 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07232C9971A1001C3597 /* SignInView.swift */; };
+		095B07262C9971E5001C3597 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07252C9971E5001C3597 /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		095B07102C9874C3001C3597 /* NutriFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		095B07132C9874C3001C3597 /* NutriFitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriFitApp.swift; sourceTree = "<group>"; };
-		095B07152C9874C3001C3597 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		095B07152C9874C3001C3597 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		095B07172C9874C5001C3597 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		095B071A2C9874C5001C3597 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		095B07212C996AF7001C3597 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
+		095B07232C9971A1001C3597 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		095B07252C9971E5001C3597 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +57,11 @@
 		095B07122C9874C3001C3597 /* NutriFit */ = {
 			isa = PBXGroup;
 			children = (
+				095B07252C9971E5001C3597 /* SignUpView.swift */,
+				095B07232C9971A1001C3597 /* SignInView.swift */,
+				095B07212C996AF7001C3597 /* TextExtensions.swift */,
 				095B07132C9874C3001C3597 /* NutriFitApp.swift */,
-				095B07152C9874C3001C3597 /* ContentView.swift */,
+				095B07152C9874C3001C3597 /* HomeView.swift */,
 				095B07172C9874C5001C3597 /* Assets.xcassets */,
 				095B07192C9874C5001C3597 /* Preview Content */,
 			);
@@ -137,7 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				095B07162C9874C3001C3597 /* ContentView.swift in Sources */,
+				095B07162C9874C3001C3597 /* HomeView.swift in Sources */,
+				095B07262C9971E5001C3597 /* SignUpView.swift in Sources */,
+				095B07222C996AF7001C3597 /* TextExtensions.swift in Sources */,
+				095B07242C9971A1001C3597 /* SignInView.swift in Sources */,
 				095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
