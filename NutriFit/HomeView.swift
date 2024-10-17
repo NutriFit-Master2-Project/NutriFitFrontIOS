@@ -9,14 +9,24 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var showToast: Bool = false
+    @State private var navigateToDashboard: Bool = false
+    @State private var navigateToSignIn: Bool = false
+    
+    init() {
+        // Configuration de l'apparence de la barre de navigation
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(red: 40 / 255, green: 40 / 255, blue: 40 / 255, alpha: 1)
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
                     .ignoresSafeArea()
                 
-                // Contenu principal
                 VStack {
                     // Logo
                     Image("Icon")
@@ -38,7 +48,9 @@ struct HomeView: View {
                         .multilineTextAlignment(.center)
 
                     // Sign In Button
-                    NavigationLink(destination: SignInView()) {
+                    Button(action: {
+                        checkIsAuth()
+                    }) {
                         Text("Se connecter")
                             .font(.headline)
                             .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
@@ -47,6 +59,8 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.top, 100)
+                    .navigationDestination(isPresented: $navigateToDashboard) { DashBoardView() }
+                    .navigationDestination(isPresented: $navigateToSignIn) { SignInView() }
                     
                     HStack {
                         // Title inscription
@@ -64,6 +78,52 @@ struct HomeView: View {
             }
         }
     }
+    
+    func checkIsAuth() {
+        // Récupérer le token et l'ID utilisateur depuis UserDefaults
+        guard let token = UserDefaults.standard.string(forKey: "authToken"),
+              let userId = UserDefaults.standard.string(forKey: "userId") else {
+            print("Token ou ID utilisateur manquant.")
+            navigateToSignIn = true
+            return
+        }
+
+        // Construire l'URL avec l'userId (paramètre dans l'URL, pas dans le body)
+        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)") else {
+            print("URL invalide.")
+            navigateToSignIn = true
+            return
+        }
+
+        // Configurer la requête
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "auth-token")
+
+        // Effectuer la requête via URLSession
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Gérer les erreurs
+            if let error = error {
+                print("Erreur lors de la requête : \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    navigateToSignIn = true
+                }
+                return
+            }
+
+            // Vérifier le code de réponse HTTP
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    navigateToDashboard = true
+                }
+            } else {
+                print("Échec de l'authentification. Réponse HTTP : \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                DispatchQueue.main.async {
+                    navigateToSignIn = true
+                }
+            }
+        }.resume()
+    }
 }
 
 func toastView(message: String) -> some View {
@@ -80,5 +140,3 @@ func toastView(message: String) -> some View {
     .frame(maxWidth: .infinity)
     .transition(.opacity)
 }
-
-

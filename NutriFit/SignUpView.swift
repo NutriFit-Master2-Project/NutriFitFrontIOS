@@ -13,9 +13,11 @@ struct SignUpView: View {
     @State private var password: String = ""
     @State private var showToast: Bool = false
     @State private var toastText: String = "Toast Default"
+    @State private var isLoading: Bool = false
+    @State private var isAccCreate: Bool = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
                     .ignoresSafeArea()
@@ -32,10 +34,12 @@ struct SignUpView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
 
-                }.padding(.bottom, 600)
+                }
+                .padding(.bottom, 700)
+                .padding(.top, 150)
                 
                 VStack {
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading) {
                         
                         HStack{
                             // Icon Person
@@ -111,28 +115,30 @@ struct SignUpView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                     }
-                    .padding(.top, 70)
-                }
-                if showToast {
-                    toastView(message: toastText)
-                        .transition(.slide)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation {
-                                    showToast = false
+                    .padding(.top, 50)
+                    
+                    if isLoading {
+                        ProgressView("Création du compte...")
+                    }
+                    
+                    if showToast {
+                        toastView(message: toastText)
+                            .transition(.slide)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation {
+                                        showToast = false
+                                    }
                                 }
-                            }
-                        }
+                            }.padding(.top, 30)
+                    }
                 }
+                .navigationDestination(isPresented: $isAccCreate) { SignInView() }
             }
         }
     }
     
     func SignUp(name : String, email: String, password: String) {
-        print(name)
-        print(email)
-        print(password)
-
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up") else {
             print("URL invalide")
             return
@@ -151,7 +157,9 @@ struct SignUpView: View {
         request.httpBody = httpBody
 
         // Envoyer la requête via URLSession
+        isLoading = true
         URLSession.shared.dataTask(with: request) { data, response, error in
+            isLoading = false
             if let error = error {
                 print("Erreur lors de l'envoi de la requête : \(error.localizedDescription)")
                 return
@@ -160,7 +168,6 @@ struct SignUpView: View {
             // Gérer les données de la réponse
             if let data = data {
                 do {
-                    
                     if let httpResponse = response as? HTTPURLResponse {
                         print("Statut HTTP : \(httpResponse.statusCode)")
                         
@@ -171,6 +178,7 @@ struct SignUpView: View {
                             if httpResponse.statusCode == 200 {
                                 toastText = "Inscription réussie"
                                 showToastMessage()
+                                isAccCreate = true
                             } else {
                                 if let message = responseJSON["message"] as? String {
                                     toastText = "Erreur de connexion : \(message)"

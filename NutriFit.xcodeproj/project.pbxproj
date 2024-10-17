@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		095738CE2CBFB3F3005C2DA1 /* DataUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */; };
+		095738D02CBFE71D005C2DA1 /* DashBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095738CF2CBFE718005C2DA1 /* DashBoardView.swift */; };
 		095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07132C9874C3001C3597 /* NutriFitApp.swift */; };
 		095B07162C9874C3001C3597 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07152C9874C3001C3597 /* HomeView.swift */; };
 		095B07182C9874C5001C3597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B07172C9874C5001C3597 /* Assets.xcassets */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUserView.swift; sourceTree = "<group>"; };
+		095738CF2CBFE718005C2DA1 /* DashBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashBoardView.swift; sourceTree = "<group>"; };
 		095B07102C9874C3001C3597 /* NutriFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		095B07132C9874C3001C3597 /* NutriFitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriFitApp.swift; sourceTree = "<group>"; };
 		095B07152C9874C3001C3597 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 		095B07122C9874C3001C3597 /* NutriFit */ = {
 			isa = PBXGroup;
 			children = (
+				095738CF2CBFE718005C2DA1 /* DashBoardView.swift */,
+				095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */,
 				095B07252C9971E5001C3597 /* SignUpView.swift */,
 				095B07232C9971A1001C3597 /* SignInView.swift */,
 				095B07212C996AF7001C3597 /* TextExtensions.swift */,
@@ -147,10 +153,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				095B07162C9874C3001C3597 /* HomeView.swift in Sources */,
+				095738D02CBFE71D005C2DA1 /* DashBoardView.swift in Sources */,
 				095B07262C9971E5001C3597 /* SignUpView.swift in Sources */,
 				095B07222C996AF7001C3597 /* TextExtensions.swift in Sources */,
 				095B07242C9971A1001C3597 /* SignInView.swift in Sources */,
 				095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */,
+				095738CE2CBFB3F3005C2DA1 /* DataUserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
