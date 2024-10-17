@@ -12,9 +12,13 @@ struct SignInView: View {
     @State private var password: String = ""
     @State private var showToast: Bool = false
     @State private var toastText: String = "Toast Default"
-    
+    @State private var isLoading: Bool = false
+    @State private var isFirstConnection: Bool = false
+    @State private var isNotFirstConnection: Bool = false
+
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
                     .ignoresSafeArea()
@@ -32,10 +36,12 @@ struct SignInView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
-                }.padding(.bottom, 600)
+                }
+                .padding(.bottom, 600)
+                .padding(.top, 150)
                 
                 VStack {
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading) {
                         
                         HStack{
                             // Icon Email
@@ -89,36 +95,39 @@ struct SignInView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                     }
-                    .padding(.top, 70)
-                }
-                if showToast {
-                    toastView(message: toastText)
-                        .transition(.slide)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation {
-                                    showToast = false
+                    .padding(.top, 50)
+                    
+                    if isLoading {
+                        ProgressView("Connexion...")
+                    }
+                    if showToast {
+                        toastView(message: toastText)
+                            .transition(.slide)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation {
+                                        showToast = false
+                                    }
                                 }
-                            }
-                        }
+                            }.padding(.top, 30)
+                    }
                 }
+                .navigationDestination(isPresented: $isFirstConnection) { DataUserView(isFirstConnection: $isFirstConnection) }
+                .navigationDestination(isPresented: $isNotFirstConnection) { DashBoardView() }
             }
         }
     }
     
     func SignIn(email: String, password: String) {
-        print(email)
-        print(password)
-
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in") else {
-            print("URL invalide")
+            print("SignIn - URL invalide")
             return
         }
 
         let parameters: [String: String] = ["email": email, "password": password]
 
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            print("Erreur de conversion des données en JSON")
+            print("SignIn - Erreur de conversion des données en JSON")
             return
         }
 
@@ -128,36 +137,45 @@ struct SignInView: View {
         request.httpBody = httpBody
 
         // Envoyer la requête via URLSession
+        isLoading = true
         URLSession.shared.dataTask(with: request) { data, response, error in
+            isLoading = false
             if let error = error {
-                print("Erreur lors de l'envoi de la requête : \(error.localizedDescription)")
+                print("SignIn - Erreur lors de l'envoi de la requête : \(error.localizedDescription)")
                 return
             }
 
-            // Gérer les données de la réponse
             if let data = data {
                 do {
-                    
-                    if let httpResponse = response as? HTTPURLResponse {
-                        print("Statut HTTP : \(httpResponse.statusCode)")
+                    if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                         
-                        if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            print("Réponse de l'API : \(responseJSON)")
-                            
-                            // Vérifier les statuts de réussite ou d'échec
-                            if httpResponse.statusCode == 200 {
+                        if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           
+                           let token = responseJSON["token"] as? String {
+                            UserDefaults.standard.set(token, forKey: "authToken")
+                            if let decodedPayload = decodeJWT(token: token),
+                               let userId = decodedPayload["userId"] as? String {
+                                UserDefaults.standard.set(userId, forKey: "userId")
+                                fetchUserInfo(userId: userId) { jsonResponse in
+                                    if let apiResponse = jsonResponse {
+                                        if checkFirstConnection(apiResponse: apiResponse) {
+                                            isFirstConnection = true
+                                        } else {
+                                            isNotFirstConnection = true
+                                        }
+                                    }
+                                }
                                 toastText = "Connexion réussie"
                                 showToastMessage()
-                            } else {
-                                if let message = responseJSON["message"] as? String {
-                                    toastText = "Erreur : \(message)"
-                                    showToastMessage()
-                                }
                             }
                         }
+                    } else {
+                        print("SignIn - Échec de la connexion")
+                        toastText = "Échec de la connexion"
+                        showToastMessage()
                     }
                 } catch {
-                    print("Erreur de décodage de la réponse : \(error)")
+                    print("SignIn - Erreur de décodage de la réponse : \(error)")
                 }
             }
         }.resume()
@@ -168,4 +186,93 @@ struct SignInView: View {
             showToast = true
         }
     }
+    
+    func decodeJWT(token: String) -> [String: Any]? {
+        // Diviser le token en trois parties : header, payload, signature
+        let segments = token.split(separator: ".")
+        guard segments.count == 3 else {
+            print("decodeJWT - Le token JWT est invalide")
+            return nil
+        }
+        
+        // La partie utile est le payload (2ème segment)
+        let payloadSegment = String(segments[1])
+        
+        // Convertir Base64URL en Base64
+        var base64Payload = payloadSegment
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        
+        // Ajouter un padding si nécessaire (Base64 standard doit être un multiple de 4)
+        while base64Payload.count % 4 != 0 {
+            base64Payload += "="
+        }
+        
+        // Décoder le Base64
+        guard let decodedData = Data(base64Encoded: base64Payload),
+              let decodedPayload = String(data: decodedData, encoding: .utf8) else {
+            print("decodeJWT - Échec du décodage du payload")
+            return nil
+        }
+
+        // Convertir la chaîne JSON en un dictionnaire
+        guard let data = decodedPayload.data(using: .utf8),
+              let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+              let payload = jsonObject as? [String: Any] else {
+            print("decodeJWT - Échec de la conversion en JSON")
+            return nil
+        }
+        return payload
+    }
+    
+    func fetchUserInfo(userId: String, completion: @escaping ([String: Any]?) -> Void) {
+        // Construire l'URL avec l'userId
+        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)"
+        guard let url = URL(string: urlString) else {
+            print("fetchUserInfo - URL invalide")
+            completion(nil)
+            return
+        }
+        
+        guard let token = UserDefaults.standard.string(forKey: "authToken") else {
+            print("fetchUserInfo - Aucun token trouvé")
+            completion(nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "auth-token")
+        
+        // Envoyer la requête via URLSession
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("fetchUserInfo - Erreur lors de la requête user-info : \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            if let data = data {
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        completion(jsonResponse)
+                    }
+                } catch {
+                    print("fetchUserInfo - Erreur de décodage de la réponse : \(error)")
+                    completion(nil)
+                    return
+                }
+            }
+        }.resume()
+    }
+    
+    func checkFirstConnection(apiResponse: [String: Any]) -> Bool {
+        if let activites = apiResponse["activites"] as? String {
+            return activites.isEmpty
+        } else {
+            return true
+        }
+    }
 }
+
