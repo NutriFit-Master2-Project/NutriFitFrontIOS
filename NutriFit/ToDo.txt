@@ -1,0 +1,142 @@
+
+------------------------------ ToDoList :
+
+Revoir toute l'appli si tout est ok niveau front, pas de bug ni d'incohérence etc
+
+Déplacer bouton scan et modifier la taille + bouton pour enregistrer le produit
+Refont le front DataUser
+Refont le calendrier
+Mettre face ID
+
+Pour le sport ajouter une jauge des calories gagnées avec les steps + activité sportive
+
+
+------------------------------ Note :
+
+Couleur du bleu footer : #5985E1
+
+Pour icon Google :
+Weight 200
+Grade 0
+Optical 40
+Size 24
+
+
+
+
+
+
+
+Utiliser le NavigationLink juste pour un déplacement
+Utiliser .navigationDestination pour déplacement avec condition
+NavigationStack {
+    List {
+        NavigationLink("Voir les détails de l'article", value: "ArticleDetails")
+        NavigationLink("Voir le profil", value: "UserProfile")
+    }
+    .navigationTitle("Menu")
+    .navigationDestination(for: String.self) { valeur in
+        switch valeur {
+        case "ArticleDetails":
+            ArticleDetailsView()
+        case "UserProfile":
+            UserProfileView()
+        default:
+            Text("Vue non trouvée")
+        }
+    }
+}
+
+Rectangle()
+    .fill(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+    .frame(width: 370, height: 250)
+    .cornerRadius(20)
+    .overlay(
+        RoundedRectangle(cornerRadius: 20)
+            .stroke(Color.gray, lineWidth: 0.4)
+    )
+    .shadow(radius: 5)
+    .padding(.top, 50)
+
+// Footer
+VStack {
+    HStack {
+        Spacer()
+        
+        VStack {
+            Button(action: {
+                // Page Sport avec un NavigationLink
+            }) {
+                Image("IconActivites")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            Text("Sport")
+                .customFootText()
+        }
+        .padding([.leading, .trailing], 5)
+        .padding(.trailing, 5)
+        
+        Spacer()
+        
+        VStack {
+            NavigationLink(destination: FridgeView()) {
+                Image("IconFridge")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            Text("Frigo")
+                .customFootText()
+        }
+        .padding([.leading, .trailing], 5)
+        .padding(.trailing, 5)
+        
+        Spacer()
+        
+        VStack {
+            Button(action: {
+                // Page Sport avec un NavigationLink
+            }) {
+                Image("IconBlue")
+                    .resizable()
+                    .frame(width: 35, height: 30)
+            }
+            Text("Acceuil")
+                .customFootText()
+        }
+        .padding([.leading, .trailing], 5)
+        .padding(.trailing, 4)
+        
+        Spacer()
+        
+        VStack {
+            NavigationLink(destination: ScanBarCodeView()) {
+                Image("IconBarcode")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            Text("Scanner")
+                .customFootText()
+        }
+        .padding([.leading, .trailing], 5)
+        
+        Spacer()
+        
+        VStack {
+            NavigationLink(destination: DataUserView(isFirstConnection: $isFirstConnection)) {
+                Image("IconSetting")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            Text("Paramètres")
+                .customFootText()
+        }
+        
+        Spacer()
+    }
+    .padding(.top, 5)
+    .padding(.bottom, 40)
+}
+.background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+.frame(height: 60)
+.frame(maxWidth: .infinity)

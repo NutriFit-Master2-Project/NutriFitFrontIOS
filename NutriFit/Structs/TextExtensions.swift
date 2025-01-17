@@ -33,4 +33,10 @@ extension Text {
             .font(.system(size: 15))
             .foregroundColor(.white)
     }
+    
+    func customFootText() -> Text {
+        self
+            .font(.system(size: 10))
+            .foregroundColor(.white)
+    }
 }
