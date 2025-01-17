@@ -3,33 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		095738CE2CBFB3F3005C2DA1 /* DataUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */; };
-		095738D02CBFE71D005C2DA1 /* DashBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095738CF2CBFE718005C2DA1 /* DashBoardView.swift */; };
+		090E767F2CC705C80088D895 /* ToDo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 090E767E2CC705BC0088D895 /* ToDo.txt */; };
 		095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07132C9874C3001C3597 /* NutriFitApp.swift */; };
-		095B07162C9874C3001C3597 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07152C9874C3001C3597 /* HomeView.swift */; };
 		095B07182C9874C5001C3597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B07172C9874C5001C3597 /* Assets.xcassets */; };
 		095B071B2C9874C5001C3597 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B071A2C9874C5001C3597 /* Preview Assets.xcassets */; };
-		095B07222C996AF7001C3597 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07212C996AF7001C3597 /* TextExtensions.swift */; };
-		095B07242C9971A1001C3597 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07232C9971A1001C3597 /* SignInView.swift */; };
-		095B07262C9971E5001C3597 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07252C9971E5001C3597 /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUserView.swift; sourceTree = "<group>"; };
-		095738CF2CBFE718005C2DA1 /* DashBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashBoardView.swift; sourceTree = "<group>"; };
+		090E767E2CC705BC0088D895 /* ToDo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 		095B07102C9874C3001C3597 /* NutriFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		095B07132C9874C3001C3597 /* NutriFitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriFitApp.swift; sourceTree = "<group>"; };
-		095B07152C9874C3001C3597 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		095B07172C9874C5001C3597 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		095B071A2C9874C5001C3597 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		095B07212C996AF7001C3597 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
-		095B07232C9971A1001C3597 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
-		095B07252C9971E5001C3597 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		090707032CF64EBF0050F279 /* Structs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Structs; sourceTree = "<group>"; };
+		090707062CF64FFC0050F279 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		095B070D2C9874C3001C3597 /* Frameworks */ = {
@@ -61,15 +56,12 @@
 		095B07122C9874C3001C3597 /* NutriFit */ = {
 			isa = PBXGroup;
 			children = (
-				095738CF2CBFE718005C2DA1 /* DashBoardView.swift */,
-				095738CD2CBFB3E1005C2DA1 /* DataUserView.swift */,
-				095B07252C9971E5001C3597 /* SignUpView.swift */,
-				095B07232C9971A1001C3597 /* SignInView.swift */,
-				095B07212C996AF7001C3597 /* TextExtensions.swift */,
+				090E767E2CC705BC0088D895 /* ToDo.txt */,
 				095B07132C9874C3001C3597 /* NutriFitApp.swift */,
-				095B07152C9874C3001C3597 /* HomeView.swift */,
 				095B07172C9874C5001C3597 /* Assets.xcassets */,
 				095B07192C9874C5001C3597 /* Preview Content */,
+				090707062CF64FFC0050F279 /* Views */,
+				090707032CF64EBF0050F279 /* Structs */,
 			);
 			path = NutriFit;
 			sourceTree = "<group>";
@@ -96,6 +88,10 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				090707032CF64EBF0050F279 /* Structs */,
+				090707062CF64FFC0050F279 /* Views */,
 			);
 			name = NutriFit;
 			productName = NutriFit;
@@ -142,6 +138,7 @@
 			files = (
 				095B071B2C9874C5001C3597 /* Preview Assets.xcassets in Resources */,
 				095B07182C9874C5001C3597 /* Assets.xcassets in Resources */,
+				090E767F2CC705C80088D895 /* ToDo.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,13 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				095B07162C9874C3001C3597 /* HomeView.swift in Sources */,
-				095738D02CBFE71D005C2DA1 /* DashBoardView.swift in Sources */,
-				095B07262C9971E5001C3597 /* SignUpView.swift in Sources */,
-				095B07222C996AF7001C3597 /* TextExtensions.swift in Sources */,
-				095B07242C9971A1001C3597 /* SignInView.swift in Sources */,
 				095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */,
-				095738CE2CBFB3F3005C2DA1 /* DataUserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,12 +280,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriFit/NutriFit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NutriFit/Preview Content\"";
 				DEVELOPMENT_TEAM = 8Z9AAUGFV8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriFit à besoin de la caméra pour scanner votre aliment";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Nutrifit à besoin de l'application santé pour utiliser vos pas";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Nutrifit à besoin de l'application santé pour utiliser vos pas";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -318,12 +313,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriFit/NutriFit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NutriFit/Preview Content\"";
 				DEVELOPMENT_TEAM = 8Z9AAUGFV8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriFit à besoin de la caméra pour scanner votre aliment";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Nutrifit à besoin de l'application santé pour utiliser vos pas";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Nutrifit à besoin de l'application santé pour utiliser vos pas";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

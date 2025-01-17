@@ -11,109 +11,105 @@ struct SignInView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showToast: Bool = false
-    @State private var toastText: String = "Toast Default"
+    @State private var toastText: String = ""
     @State private var isLoading: Bool = false
     @State private var isFirstConnection: Bool = false
     @State private var isNotFirstConnection: Bool = false
 
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
-                    .ignoresSafeArea()
+        ZStack {
+            Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
+                .ignoresSafeArea()
+            
+            VStack {
+                // Logo
+                Image("Icon")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
                 
-                VStack {
-                    // Logo
-                    Image("Icon")
+                
+                // Title Connexion
+                Text("Connexion")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+            }
+            .padding(.bottom, 600)
+            .padding(.top, 150)
+            
+            VStack {
+                HStack{
+                    // Icon Email
+                    Image("IconEmail")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100)
+                        .frame(width: 35, height: 35)
                     
+                    Spacer()
+                        .frame(width: 20)
                     
-                    // Title Connexion
-                    Text("Connexion")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    
+                    // Textfield Email
+                    TextField("Entrez votre email", text: $email)
+                        .padding()
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
                 }
-                .padding(.bottom, 600)
-                .padding(.top, 150)
                 
-                VStack {
-                    VStack(alignment: .leading) {
-                        
-                        HStack{
-                            // Icon Email
-                            Image("IconEmail")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 35, height: 35)
-                            
-                            Spacer()
-                                .frame(width: 20)
-                            
-                            // Textfield Email
-                            TextField("Entrez votre email", text: $email)
-                                .padding()
-                                .background(Color(UIColor.systemGray6))
-                                .cornerRadius(10)
-                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                        }
-                        
-                        Spacer()
-                            .frame(height: 40)
-                        
-                        HStack{
-                            // Icon Password
-                            Image("IconPassword")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 35, height: 35)
-                            
-                            Spacer()
-                                .frame(width: 20)
-                            
-                            // Textfield Password
-                            SecureField("Entrez votre mot de passe", text: $password)
-                                .padding()
-                                .background(Color(UIColor.systemGray6))
-                                .cornerRadius(10)
-                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 100)
+                Spacer()
+                    .frame(height: 40)
+                
+                HStack{
+                    // Icon Password
+                    Image("IconPassword")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 35, height: 35)
                     
-                    Button(action: {
-                        SignIn(email: email, password: password)
-                    }) {
-                        Text("Se connecter")
-                            .font(.headline)
-                            .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                            .frame(width: 200, height: 50)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                    }
-                    .padding(.top, 50)
+                    Spacer()
+                        .frame(width: 20)
                     
-                    if isLoading {
-                        ProgressView("Connexion...")
-                    }
-                    if showToast {
-                        toastView(message: toastText)
-                            .transition(.slide)
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    withAnimation {
-                                        showToast = false
-                                    }
-                                }
-                            }.padding(.top, 30)
-                    }
+                    // Textfield Password
+                    SecureField("Entrez votre mot de passe", text: $password)
+                        .padding()
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
                 }
-                .navigationDestination(isPresented: $isFirstConnection) { DataUserView(isFirstConnection: $isFirstConnection) }
-                .navigationDestination(isPresented: $isNotFirstConnection) { DashBoardView() }
+                
+                Button(action: {
+                    SignIn(email: email, password: password)
+                }) {
+                    Text("Se connecter")
+                        .font(.headline)
+                        .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
+                        .frame(width: 200, height: 50)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                }
+                .padding(.top, 50)
+                
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 100)
+            .navigationDestination(isPresented: $isFirstConnection) { MainApp(isFirstConnection: $isFirstConnection) }
+            .navigationDestination(isPresented: $isNotFirstConnection) { MainApp(isFirstConnection: $isFirstConnection) }
+            
+            if isLoading {
+                ProgressView("Connexion...")
+            }
+            if showToast {
+                toastView(message: toastText)
+                    .transition(.slide)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
+                    }
             }
         }
     }
@@ -269,7 +265,7 @@ struct SignInView: View {
     
     func checkFirstConnection(apiResponse: [String: Any]) -> Bool {
         if let activites = apiResponse["activites"] as? String {
-            return activites.isEmpty
+            return false
         } else {
             return true
         }

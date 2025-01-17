@@ -11,7 +11,7 @@ struct HomeView: View {
     @State private var showToast: Bool = false
     @State private var navigateToDashboard: Bool = false
     @State private var navigateToSignIn: Bool = false
-    
+    @State private var isFirstConnection: Bool = false
     init() {
         // Configuration de l'apparence de la barre de navigation
         let appearance = UINavigationBarAppearance()
@@ -59,7 +59,7 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.top, 100)
-                    .navigationDestination(isPresented: $navigateToDashboard) { DashBoardView() }
+                    .navigationDestination(isPresented: $navigateToDashboard) { MainApp(isFirstConnection: $isFirstConnection) }
                     .navigationDestination(isPresented: $navigateToSignIn) { SignInView() }
                     
                     HStack {
@@ -80,7 +80,6 @@ struct HomeView: View {
     }
     
     func checkIsAuth() {
-        // Récupérer le token et l'ID utilisateur depuis UserDefaults
         guard let token = UserDefaults.standard.string(forKey: "authToken"),
               let userId = UserDefaults.standard.string(forKey: "userId") else {
             print("Token ou ID utilisateur manquant.")
@@ -88,21 +87,17 @@ struct HomeView: View {
             return
         }
 
-        // Construire l'URL avec l'userId (paramètre dans l'URL, pas dans le body)
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)") else {
             print("URL invalide.")
             navigateToSignIn = true
             return
         }
-
-        // Configurer la requête
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(token, forHTTPHeaderField: "auth-token")
 
-        // Effectuer la requête via URLSession
         URLSession.shared.dataTask(with: request) { data, response, error in
-            // Gérer les erreurs
             if let error = error {
                 print("Erreur lors de la requête : \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -111,7 +106,6 @@ struct HomeView: View {
                 return
             }
 
-            // Vérifier le code de réponse HTTP
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 DispatchQueue.main.async {
                     navigateToDashboard = true
@@ -135,7 +129,7 @@ func toastView(message: String) -> some View {
             .background(Color.gray.opacity(0.4))
             .foregroundColor(.white)
             .cornerRadius(10)
-            .padding(.bottom, 50)
+            .padding(.bottom, 150)
     }
     .frame(maxWidth: .infinity)
     .transition(.opacity)

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "activites 2.png",
+      "filename" : "step.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "activites 1.png",
+      "filename" : "step 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "activites.png",
+      "filename" : "step 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

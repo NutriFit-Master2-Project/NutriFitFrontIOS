@@ -18,6 +18,7 @@ struct DataUserView: View {
     @State private var selectedDisplayActivity: String = ""
     @State private var selectedDisplayGoal: String = ""
     @Binding var isFirstConnection: Bool
+    @State private var isFirstConnectionApp = false
 
     let genders = ["Homme", "Femme"]
     let activites = ["SEDENTARY", "ACTIVE", "SPORTIVE"]
@@ -26,11 +27,11 @@ struct DataUserView: View {
     let displayGoals = ["Perte de poids", "Prise de masse"]
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
-                    .ignoresSafeArea()
-                
+        ZStack {
+            Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
+                .ignoresSafeArea()
+            
+            VStack {
                 ScrollView(.vertical) {
                     ZStack {
                         Rectangle()
@@ -39,10 +40,10 @@ struct DataUserView: View {
                             .cornerRadius(20)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.gray, lineWidth: 1)
+                                    .stroke(Color.gray, lineWidth: 0.4)
                             )
                             .shadow(radius: 5)
-                            .padding(.top, 80)
+                            .padding(.top, 30)
                         
                         VStack {
                             VStack {
@@ -51,15 +52,8 @@ struct DataUserView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
-                                
-                                
-                                // Title Connexion
-                                Text("Données personnelles")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                
                             }
-                            .padding(.bottom, 50)
+                            .padding(.bottom, 40)
                             
                             HStack {
                                 // Icon Age
@@ -206,6 +200,7 @@ struct DataUserView: View {
                                     .cornerRadius(10)
                             }
                             .padding(.top, 70)
+                            .padding(.bottom, 50)
                         }
                         .padding(.horizontal, 10)
                         .padding(.top, 20)
@@ -221,16 +216,19 @@ struct DataUserView: View {
                     }
                 }
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Terminer") {
-                        hideKeyboard()
-                    }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Terminer") {
+                    hideKeyboard()
                 }
             }
-            .navigationDestination(isPresented: $isSaveUserInfo) { DashBoardView() }
         }
+        .navigationTitle("Données personnelles")
+        .navigationDestination(isPresented: $isSaveUserInfo) { MainApp(isFirstConnection: $isFirstConnectionApp) }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     // Fonction pour enregistrer les données de l'user
@@ -292,10 +290,6 @@ struct DataUserView: View {
         }
         request.httpBody = httpBody
         
-        print(userId)
-        print(token)
-        print(userData)
-        
         // Envoyer la requête via URLSession
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -306,7 +300,6 @@ struct DataUserView: View {
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                print("Code de réponse HTTP : \(httpResponse.statusCode)")
                 DispatchQueue.main.async {
                     isSaveUserInfo = true
                 }
@@ -314,10 +307,6 @@ struct DataUserView: View {
                 DispatchQueue.main.async {
                     print("Échec de la mise à jour des données.")
                 }
-            }
-            
-            if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                print("Réponse du serveur : \(responseString)")
             }
         }.resume()
     }
