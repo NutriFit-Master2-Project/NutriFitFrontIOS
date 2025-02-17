@@ -85,7 +85,7 @@ struct SignInView: View {
                     Text("Se connecter")
                         .font(.headline)
                         .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                        .frame(width: 200, height: 50)
+                        .frame(width: 200, height: 40)
                         .background(Color.white)
                         .cornerRadius(10)
                 }
@@ -264,7 +264,7 @@ struct SignInView: View {
     }
     
     func checkFirstConnection(apiResponse: [String: Any]) -> Bool {
-        if let activites = apiResponse["activites"] as? String {
+        if apiResponse["activites"] is String {
             return false
         } else {
             return true

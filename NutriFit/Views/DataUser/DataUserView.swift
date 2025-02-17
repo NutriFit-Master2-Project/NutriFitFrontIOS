@@ -34,182 +34,185 @@ struct DataUserView: View {
             VStack {
                 ScrollView(.vertical) {
                     ZStack {
-                        Rectangle()
-                            .fill(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                            .frame(width: 370, height: 530)
-                            .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.gray, lineWidth: 0.4)
-                            )
-                            .shadow(radius: 5)
-                            .padding(.top, 30)
-                        
                         VStack {
                             VStack {
-                                // Logo
-                                Image("Icon")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 80)
+                                Text("Données personnelles")
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.top, 20)
                             }
-                            .padding(.bottom, 40)
-                            
-                            HStack {
-                                // Icon Age
-                                Image("IconCalendar")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Textfield Age
-                                TextField("Entrez votre âge", text: $age)
-                                    .keyboardType(.numberPad)
-                                    .padding()
-                                    .background(Color(UIColor.systemGray6))
-                                    .cornerRadius(10)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                            }
-                            
-                            Spacer()
-                                .frame(height: 40)
-                            
-                            HStack {
-                                // Icon Poids
-                                Image("IconPoids")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Textfield Poids
-                                TextField("Entrez votre poids en kg", text: $weight)
-                                    .keyboardType(.decimalPad)
-                                    .padding()
-                                    .background(Color(UIColor.systemGray6))
-                                    .cornerRadius(10)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                            }
-                            
-                            Spacer()
-                                .frame(height: 40)
-                            
-                            HStack {
-                                // Icon Size
-                                Image("IconSize")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Textfield Taille
-                                TextField("Entrez votre taille en cm", text: $height)
-                                    .keyboardType(.decimalPad)
-                                    .padding()
-                                    .background(Color(UIColor.systemGray6))
-                                    .cornerRadius(10)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                            }
-                            
-                            Spacer()
-                                .frame(height: 40)
-                            
-                            HStack {
-                                // Icon Genre
-                                Image("IconGenre")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Sélecteur Genre
-                                Picker("Sélectionnez votre genre", selection: $gender) {
-                                    ForEach(genders, id: \.self) { gender in
-                                        Text(gender)
-                                    }
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                .background(Color.clear)
-                            }
-                            
-                            Spacer()
-                                .frame(height: 40)
-                            
-                            HStack {
-                                // Icon Activites
-                                Image("IconActivites")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Sélecteur Activité
-                                Picker("Niveau d'activité", selection: $selectedDisplayActivity) {
-                                    ForEach(displayActivites, id: \.self) { activity in
-                                        Text(activity)
-                                    }
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                .background(Color.clear)
-                                
-                            }
-                            
-                            Spacer()
-                                .frame(height: 40)
-                            
-                            HStack {
-                                // Icon Objectif
-                                Image("IconObjective")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 35, height: 35)
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                                
-                                // Sélecteur Objectif
-                                Picker("Votre objectif", selection: $selectedDisplayGoal) {
-                                    ForEach(displayGoals, id: \.self) { goal in
-                                        Text(goal)
-                                    }
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                .background(Color.clear)
-                            }
-                            
-                            // Bouton enregistrement
-                            Button(action: {
-                                saveUserInfo()
-                            }) {
-                                Text("Enregistrer")
-                                    .font(.headline)
-                                    .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                                    .frame(width: 200, height: 50)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                            }
-                            .padding(.top, 70)
                             .padding(.bottom, 50)
+                            
+                            VStack {
+                                HStack {
+                                    // Icon Age
+                                    Image("IconCalendar")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Textfield Age
+                                    TextField("Entrez votre âge", text: $age)
+                                        .padding([.top, .bottom, .leading], 5)
+                                        .keyboardType(.numberPad)
+                                        .background(Color(UIColor.systemGray6))
+                                        .cornerRadius(10)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                        .padding(.trailing, 10)
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 40)
+                                
+                                HStack {
+                                    // Icon Poids
+                                    Image("IconPoids")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Textfield Poids
+                                    TextField("Entrez votre poids en kg", text: $weight)
+                                        .padding([.top, .bottom, .leading], 5)
+                                        .keyboardType(.decimalPad)
+                                        .background(Color(UIColor.systemGray6))
+                                        .cornerRadius(10)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                        .padding(.trailing, 10)
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 40)
+                                
+                                HStack {
+                                    // Icon Size
+                                    Image("IconSize")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Textfield Taille
+                                    TextField("Entrez votre taille en cm", text: $height)
+                                        .padding([.top, .bottom, .leading], 5)
+                                        .keyboardType(.decimalPad)
+                                        .background(Color(UIColor.systemGray6))
+                                        .cornerRadius(10)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                        .padding(.trailing, 10)
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 40)
+                                
+                                HStack {
+                                    // Icon Genre
+                                    Image("IconGenre")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Sélecteur Genre
+                                    Picker("Sélectionnez votre genre", selection: $gender) {
+                                        ForEach(genders, id: \.self) { gender in
+                                            Text(gender)
+                                        }
+                                    }
+                                    .pickerStyle(SegmentedPickerStyle())
+                                    .background(Color.clear)
+                                    .padding(.trailing, 10)
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 40)
+                                
+                                HStack {
+                                    // Icon Activites
+                                    Image("IconActivites")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Sélecteur Activité
+                                    Picker("Niveau d'activité", selection: $selectedDisplayActivity) {
+                                        ForEach(displayActivites, id: \.self) { activity in
+                                            Text(activity)
+                                        }
+                                    }
+                                    .pickerStyle(SegmentedPickerStyle())
+                                    .background(Color.clear)
+                                    .padding(.trailing, 10)
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 40)
+                                
+                                HStack {
+                                    // Icon Objectif
+                                    Image("IconObjective")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                        .frame(width: 20)
+                                    
+                                    // Sélecteur Objectif
+                                    Picker("Votre objectif", selection: $selectedDisplayGoal) {
+                                        ForEach(displayGoals, id: \.self) { goal in
+                                            Text(goal)
+                                        }
+                                    }
+                                    .pickerStyle(SegmentedPickerStyle())
+                                    .background(Color.clear)
+                                    .padding(.trailing, 10)
+                                }
+                            }
+                            .padding([.bottom, .top],20)
+                            .frame(width: 370)
+                            .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                            .cornerRadius(20)
+                            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.1))
+                            .shadow(radius: 5)
+                            
+                            VStack {
+                                // Bouton enregistrement
+                                Button(action: {
+                                    saveUserInfo()
+                                }) {
+                                    Text("Enregistrer")
+                                        .font(.headline)
+                                        .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
+                                        .frame(width: 170, height: 40)
+                                        .background(Color.white)
+                                        .cornerRadius(10)
+                                }
+                                .padding([.top, .bottom],20)
+                            }
                         }
-                        .padding(.horizontal, 10)
-                        .padding(.top, 20)
-                        .scrollTargetLayout()
                     }
                 }
-                .frame(height: 710)
-                .contentMargins(10, for: .scrollContent)
-                .scrollTargetBehavior(.viewAligned)
                 .onAppear {
                     if !isFirstConnection {
                         fetchUserInfo()
@@ -225,7 +228,7 @@ struct DataUserView: View {
                 }
             }
         }
-        .navigationTitle("Données personnelles")
+        .navigationTitle("Paramètres")
         .navigationDestination(isPresented: $isSaveUserInfo) { MainApp(isFirstConnection: $isFirstConnectionApp) }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)

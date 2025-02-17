@@ -105,7 +105,7 @@ struct SignUpView: View {
                     Text("S'inscrire")
                         .font(.headline)
                         .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                        .frame(width: 200, height: 50)
+                        .frame(width: 200, height: 40)
                         .background(Color.white)
                         .cornerRadius(10)
                 }
@@ -164,10 +164,8 @@ struct SignUpView: View {
             if let data = data {
                 do {
                     if let httpResponse = response as? HTTPURLResponse {
-                        print("Statut HTTP : \(httpResponse.statusCode)")
                         
                         if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            print("Réponse de l'API : \(responseJSON)")
                             
                             // Vérifier les statuts de réussite ou d'échec
                             if httpResponse.statusCode == 200 {

@@ -36,6 +36,12 @@ struct MealsView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
+                    Text("Mes repas")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
+                    
                     List {
                         ForEach(meals) { meal in
                             HStack {
@@ -83,7 +89,7 @@ struct MealsView: View {
                     .scrollContentBackground(.hidden)
                 }
             }
-            .navigationTitle("Mes Repas")
+            .navigationTitle("Nutrition")
             .onAppear {
                 fetchMeals(date: dateToday) { result in
                     DispatchQueue.main.async {
