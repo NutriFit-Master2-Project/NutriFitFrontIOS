@@ -10,12 +10,11 @@ import SwiftUI
 struct MainApp: View {
     @State private var selection = 3
     @Binding var isFirstConnection: Bool
-    
+
     var body: some View {
-        TabView(selection:$selection) {
-            // View de la page Sport
+        TabView(selection: $selection) {
             NavigationView {
-                MainSportView()
+                MainTrainingView()
                     .navigationTitle("Sport")
                     .navigationBarTitleDisplayMode(.inline)
             }
@@ -23,7 +22,7 @@ struct MainApp: View {
                 Label("Sport", systemImage: "dumbbell")
             }
             .tag(1)
-            
+
             // View de la page Frigo
             NavigationView {
                 FridgeView()
@@ -34,30 +33,30 @@ struct MainApp: View {
                 Label("Frigo", systemImage: "refrigerator")
             }
             .tag(2)
-            
-            // View de la page d'acceuil
+
+            // View de la page d'accueil
             NavigationView {
                 DashBoardView()
-                    .navigationTitle("Acceuil")
+                    .navigationTitle("Accueil")
                     .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
-                Label("Acceuil", systemImage: "house")
+                Label("Accueil", systemImage: "house")
             }
             .tag(3)
-            
+
             // View de la page du scanner code barre
             NavigationView {
                 ScanBarCodeView()
-                    .navigationTitle("Acceuil")
+                    .navigationTitle("Scan produit")
                     .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
                 Label("Scanner", systemImage: "barcode.viewfinder")
             }
             .tag(4)
-            
-            // View de la page données personelles
+
+            // View de la page données personnelles
             NavigationView {
                 DataUserView(isFirstConnection: $isFirstConnection)
                     .navigationTitle("Données personnelles")
@@ -78,3 +77,4 @@ struct MainApp: View {
         }
     }
 }
+

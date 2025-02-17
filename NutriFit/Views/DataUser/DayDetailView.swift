@@ -35,30 +35,15 @@ struct DayDetailView: View {
             
             if isLoading {
                 ProgressView("Chargement...")
-            } else if let errorMessage = errorMessage {
-                Text("Erreur : \(errorMessage)")
-                    .foregroundColor(.red)
+            } else if errorMessage != nil {
+                Text("Erreur : Aucune données pour ce jour")
+                    .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding()
             } else if let entry = entry {
                 ZStack {
-                    Rectangle()
-                        .fill(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                        .frame(width: 370, height: 100)
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color.gray, lineWidth: 0.4)
-                        )
-                        .shadow(radius: 5)
-                        .padding(-180)
-                    
                     VStack() {
-                        if meals.isEmpty {
-                            Text("Aucun repas enregistré.")
-                                .foregroundColor(.gray)
-                                .padding()
-                        } else {
+                        VStack {
                             VStack {
                                 VStack(alignment: .center) {
                                     Text("Détails du : ")
@@ -78,12 +63,23 @@ struct DayDetailView: View {
                             
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Image("IconFire")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 40, height: 40)
+                                    Image(systemName: "flame")
+                                        .foregroundColor(.green)
+                                        .font(.system(size: 25))
                                     
                                     Text("Calories : \(Int(entry.calories))")
+                                        .font(.title2)
+                                        .foregroundColor(.white)
+                                }
+                                .padding(.bottom, 10)
+                                .padding(.leading, 10)
+                                
+                                HStack {
+                                    Image(systemName: "figure.run.treadmill")
+                                        .foregroundColor(.blue)
+                                        .font(.system(size: 25))
+                                    
+                                    Text("Calories brûlées : \(Int(entry.caloriesBurn))")
                                         .font(.title2)
                                         .foregroundColor(.white)
                                 }
@@ -99,50 +95,61 @@ struct DayDetailView: View {
                                         .foregroundColor(.white)
                                 }
                             }
-                            List(meals) { meal in
-                                HStack {
-                                    // Image du repas
-                                    if let url = URL(string: meal.image_url) {
-                                        AsyncImage(url: url) { image in
-                                            image
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 50, height: 50)
-                                                .cornerRadius(5)
-                                        } placeholder: {
-                                            ProgressView()
-                                        }
-                                    }
-                                    
-                                    // Info du repas
-                                    VStack(alignment: .leading) {
-                                        Text(meal.name)
-                                            .font(.headline)
-                                            .foregroundColor(.white)
-                                        HStack(){
-                                            Text("\(meal.quantity) g ou ml   - ")
-                                                .font(.subheadline)
-                                                .foregroundColor(.gray)
-                                            Text("\(Int(meal.calories)) Cal")
-                                                .font(.subheadline)
-                                                .foregroundColor(.gray)
-                                        }
+                            .padding([.bottom, .top], 5)
+                            .frame(width: 370)
+                            .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                            .cornerRadius(20)
+                            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.2))
+                            .shadow(radius: 5)
+
+                            if meals.isEmpty {
+                                Text("Aucun repas enregistré.")
+                                    .foregroundColor(.gray)
+                                    .padding()
+                            }
+                        }
+                        List(meals) { meal in
+                            HStack {
+                                // Image du repas
+                                if let url = URL(string: meal.image_url) {
+                                    AsyncImage(url: url) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 50)
+                                            .cornerRadius(5)
+                                    } placeholder: {
+                                        ProgressView()
                                     }
                                 }
-                                .contentShape(Rectangle())
-                                .foregroundColor(.clear)
-                                .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                                .padding(.vertical, 10)
+                                
+                                // Info du repas
+                                VStack(alignment: .leading) {
+                                    Text(meal.name)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    HStack(){
+                                        Text("\(meal.quantity) g ou ml   - ")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                        Text("\(Int(meal.calories)) Cal")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
                             }
-                            .shadow(radius: 5)
-                            .scrollContentBackground(.hidden)
+                            .contentShape(Rectangle())
+                            .foregroundColor(.clear)
+                            .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                            .padding(.vertical, 10)
                         }
+                        .shadow(radius: 5)
+                        .scrollContentBackground(.hidden)
                     }
                 }
             }
         }
         .navigationTitle("Jour sélectionné")
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             isLoading = true
             fetchDailyEntry(for: formattedDateAPI) { result in

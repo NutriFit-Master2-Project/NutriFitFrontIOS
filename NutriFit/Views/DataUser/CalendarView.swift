@@ -57,65 +57,79 @@ struct CalendarView: View {
                 Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
                     .ignoresSafeArea()
                 
-                Rectangle()
-                    .fill(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                    .frame(width: 380, height: 450)
-                    .cornerRadius(20)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.gray, lineWidth: 0.4)
-                    )
-                    .shadow(radius: 5)
-                    .padding(.top, 10)
-                
                 VStack {
+                    
                     // Titre du mois
-                    Text(currentMonthName.capitalized)
-                        .font(.title)
-                        .padding()
+                    VStack {
+                        Text(currentMonthName.capitalized)
+                            .font(.largeTitle)
+                    }
+                    .padding(.bottom, 30)
                     
                     // Grille du calendrier
-                    LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(daysInMonthWithPadding, id: \.self) { day in
-                            if let day = day {
-                                let isToday = calendar.isDate(day, inSameDayAs: today)
-                                
-                                NavigationLink(
-                                    destination: DayDetailView(day: day),
-                                    label: {
-                                        Text("\(calendar.component(.day, from: day))")
-                                            .frame(width: 40, height: 40)
-                                            .background(isToday ? Color.blue : Color.white)
-                                            .foregroundColor(.black)
-                                            .clipShape(Circle())
-                                    }
-                                )
-                            } else {
-                                // Case vide
-                                Text("")
-                                    .frame(width: 40, height: 40)
+                    VStack {
+                        HStack {
+                            ForEach(["L", "M", "M", "J", "V", "S", "D"], id: \.self) { day in
+                                VStack() { // Ajouter de l'espace entre le texte et la ligne
+                                    Text(day)
+                                        .foregroundColor(.gray)
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(.white)
+                                }
                             }
                         }
-                    }
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(daysInMonthWithPadding, id: \.self) { day in
+                                if let day = day {
+                                    let isToday = calendar.isDate(day, inSameDayAs: today)
+                                    
+                                    NavigationLink(
+                                        destination: DayDetailView(day: day),
+                                        label: {
+                                            Text("\(calendar.component(.day, from: day))")
+                                                .frame(width: 40, height: 40)
+                                                .background(isToday ? Color.blue : Color.clear)
+                                                .foregroundColor(.white)
+                                                .clipShape(Circle())
+                                                .padding(.bottom, 20)
+                                                .padding([.leading, .trailing], 5)
+                                        }
+                                    )
+                                } else {
+                                    Text("")
+                                        .frame(width: 40, height: 40)
+                                }
+                            }
+                        }                    }
+                    .padding([.top, .bottom], 10)
+                    .frame(width: 370)
+                    .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                    .cornerRadius(20)
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.2))
+                    .shadow(radius: 5)
                     .padding()
                     
                     // Boutons pour naviguer entre les mois
-                    HStack {
-                        Button(action: {
-                            currentDate = calendar.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
-                        }) {
-                            Label("Précédent", systemImage: "chevron.left")
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            currentDate = calendar.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
-                        }) {
-                            Label("Suivant", systemImage: "chevron.right")
+                    VStack {
+                        HStack {
+                            Button(action: {
+                                currentDate = calendar.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                            }) {
+                                Label("Précédent", systemImage: "chevron.left")
+                            }
+                            .padding(.leading, 25)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                currentDate = calendar.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                            }) {
+                                Label("Suivant", systemImage: "chevron.right")
+                            }
+                            .padding(.trailing, 25)
                         }
                     }
-                    .padding()
                 }
             }
         }

@@ -30,6 +30,11 @@ struct FridgeView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
+                    Text("Mes Aliments")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
                     List {
                         ForEach(productList) { product in
                             HStack {
@@ -52,7 +57,7 @@ struct FridgeView: View {
                                     .foregroundColor(.white)
                             }
                             .contentShape(Rectangle())
-                            .foregroundColor(.clear)
+                            //.foregroundColor(.clear)
                             .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                             .padding(.vertical, 10)
                             .onTapGesture {
@@ -68,7 +73,6 @@ struct FridgeView: View {
                     }
                 }
             }
-            .navigationTitle("Mon Frigo")
             .onAppear {
                 fetchProductList() { result in
                     DispatchQueue.main.async {
@@ -115,7 +119,6 @@ struct FridgeView: View {
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 if let data = data {
-                    //print("Données brutes : \(String(data: data, encoding: .utf8) ?? "Aucune donnée lisible")")
                     isLoading = false
                     do {
                         // Utilisation de JSONSerialization pour décoder la liste des produits

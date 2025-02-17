@@ -34,10 +34,11 @@ struct ScanBarCodeView: View {
                     Text("Scanner")
                         .font(.headline)
                         .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                        .frame(width: 110, height: 50)
+                        .frame(width: 110, height: 40)
                         .background(Color.white)
                         .cornerRadius(10)
                 }
+                .padding(.bottom, 15)
             }
         }
         .onAppear {
@@ -49,7 +50,6 @@ struct ScanBarCodeView: View {
         .navigationDestination(isPresented: $isCode) {
             ProductScanView(barCode: scannedCode)
         }
-        .navigationTitle("Scan Produit")
     }
     
     func checkCameraAuthorizationStatus() {

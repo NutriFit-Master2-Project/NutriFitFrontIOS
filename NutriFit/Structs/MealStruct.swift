@@ -23,6 +23,7 @@ struct CreatedAt: Codable {
 
 struct DailyEntry: Decodable {
     let calories: Double
+    let caloriesBurn: Double
     let steps: Int
     let date: String
     let createdAt: CreatedAt
@@ -47,6 +48,7 @@ struct DailyEntry: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         calories = try container.decodeIfPresent(Double.self, forKey: .calories) ?? 0.0
+        caloriesBurn = try container.decodeIfPresent(Double.self, forKey: .caloriesBurn) ?? 0.0
         steps = try container.decodeIfPresent(Int.self, forKey: .steps) ?? 0
         date = try container.decodeIfPresent(String.self, forKey: .date) ?? "Inconnue"
         createdAt = try container.decode(CreatedAt.self, forKey: .createdAt)
@@ -54,6 +56,7 @@ struct DailyEntry: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case calories
+        case caloriesBurn
         case steps
         case date
         case createdAt

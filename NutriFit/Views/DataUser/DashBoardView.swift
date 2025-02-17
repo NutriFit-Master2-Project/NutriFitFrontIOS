@@ -1,5 +1,5 @@
 //
-//  DashBoard.swift
+//  DashBoardView.swift
 //  NutriFit
 //
 //  Created by Maxence Walter on 16/10/2024.
@@ -16,15 +16,16 @@ struct DashBoardView: View {
     @State private var caloriesUserMax: Double = 0
     @State private var caloriesUsed: Double = 0
     @State private var stepCount: Double = 0
-    @State private var caloriesBurn: Double = 1274
-    @State private var caloriesBurnMax: Double = 1500
+    @State private var stepDiff: Double = 0
+    @State private var caloriesBurned: Double = 0
+    @State private var caloriesBurnMax: Double = 2000
     
     let healthStore = HKHealthStore()
     
     var caloriesStep: Double { stepCount * 0.05 }
     
     var caloriesRemainingMeal: Double { max(0, caloriesUserMax - caloriesUsed) }
-    var caloriesRemainingBurn: Double { max(0, caloriesBurnMax - caloriesBurn) }
+    var caloriesRemainingBurn: Double { max(0, caloriesBurnMax - caloriesBurned) }
     
     var progressCaloriesUsed: CGFloat { CGFloat(max(0, min(1, 1 - (caloriesRemainingMeal / caloriesUserMax)))) }
     var progressCaloriesBurn: CGFloat { CGFloat(max(0, min(1, 1 - (caloriesRemainingBurn / caloriesBurnMax)))) }
@@ -44,17 +45,8 @@ struct DashBoardView: View {
                 ScrollView {
                     VStack(alignment: .center) {
                         
-                        // Icon Repas / LgooNutrifit / Calendrier
+                        // Logo Nutrifit
                         HStack {
-                            NavigationLink(destination: MealsView()) {
-                                Image("IconMeal")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                            }
-                            .padding(.leading, 20)
-                            
-                            Spacer()
-                            
                             VStack {
                                 Image("Icon")
                                     .resizable()
@@ -65,15 +57,6 @@ struct DashBoardView: View {
                                     .font(.title)
                                     .fontWeight(.bold)
                             }
-                            
-                            Spacer()
-                            
-                            NavigationLink(destination: CalendarView()) {
-                                Image("IconCalendar")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                            }
-                            .padding(.trailing, 20)
                         }
                         
                         Spacer()
@@ -82,6 +65,23 @@ struct DashBoardView: View {
                         // Zone calories de la journée
                         VStack {
                             ZStack {
+                                
+                                NavigationLink(destination: MealsView()) {
+                                    Image(systemName: "fork.knife")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 25))
+                                }
+                                .padding(.trailing, 290)
+                                .padding(.bottom, 140)
+                                
+                                NavigationLink(destination: CalendarView()) {
+                                    Image(systemName: "calendar")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 30))
+                                }
+                                .padding(.leading, 290)
+                                .padding(.bottom, 140)
+                                
                                 Circle()
                                     .trim(from: 0.0, to: 0.5)
                                     .stroke(
@@ -137,7 +137,7 @@ struct DashBoardView: View {
                         .frame(width: 370)
                         .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                         .cornerRadius(20)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.4))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.2))
                         .shadow(radius: 5)
                         .padding(.bottom, -10)
                         
@@ -167,7 +167,7 @@ struct DashBoardView: View {
                                     .frame(width: 40, height: 40)
                                 
                                 VStack(alignment: .leading) {
-                                    Text("\(Int(stepCount * 0.05)) Cal")
+                                    Text("\(Int(caloriesStep)) Cal")
                                         .font(.headline)
                                         .fontWeight(.bold)
                                         .foregroundColor(.white)
@@ -181,7 +181,7 @@ struct DashBoardView: View {
                         .frame(width: 370)
                         .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                         .cornerRadius(20)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.4))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.2))
                         .shadow(radius: 5)
                         .padding()
                         
@@ -211,7 +211,7 @@ struct DashBoardView: View {
                                     .rotationEffect(.degrees(180))
                                 
                                 VStack {
-                                    Text("\(Int(caloriesBurn))")
+                                    Text("\(Int(caloriesBurned))")
                                         .font(.largeTitle)
                                         .fontWeight(.bold)
                                         .foregroundColor(.white)
@@ -226,7 +226,7 @@ struct DashBoardView: View {
                         .frame(width: 370)
                         .background(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                         .cornerRadius(20)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.4))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.2))
                         .shadow(radius: 5)
                         .padding(.top, -10)
                         .padding(.bottom, 60)
@@ -251,7 +251,7 @@ struct DashBoardView: View {
             fetchCalories { result in
                 switch result {
                 case .success(_):
-                    print()
+                    break
                 case .failure(let error):
                     print("Erreur : \(error.localizedDescription)")
                 }
@@ -272,7 +272,7 @@ struct DashBoardView: View {
             fetchDailyEntry(date: dateToday) { result in
                 switch result {
                 case .success(_):
-                    print()
+                    break
                 case .failure(let error):
                     print("Erreur : \(error.localizedDescription)")
                 }
@@ -405,19 +405,25 @@ struct DashBoardView: View {
                 if httpResponse.statusCode == 200, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            if let steps = json["steps"] as? Double {
+                                stepDiff = stepCount - steps
+                            }
+                            if let caloriesBurn = json["caloriesBurn"] as? Double {
+                                caloriesBurned = caloriesBurn
+                            }
                             let dataToUpdate: [String: Any] = [
-                                "calories": caloriesRemainingMeal,
+                                "calories": caloriesUsed,
+                                "caloriesBurn": Int(caloriesBurned + (stepDiff * 0.05)),
                                 "steps": stepCount
                             ]
                             updateDailyEntry(date: dateToday, data: dataToUpdate) { result in
                                 switch result {
                                 case .success(_):
-                                    print()
+                                    break
                                 case .failure(let error):
                                     print("Erreur : \(error.localizedDescription)")
                                 }
                             }
-                            
                             completion(.success(json))
                         } else {
                             completion(.failure(NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Réponse non valide."])))

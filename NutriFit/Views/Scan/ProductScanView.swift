@@ -1,5 +1,5 @@
 //
-//  CodeView.swift
+//  ProductScanView.swift
 //  NutriFit
 //
 //  Created by Maxence Walter on 14/11/2024.
@@ -49,7 +49,7 @@ struct ProductScanView: View {
                                             image
                                                 .resizable()
                                                 .scaledToFit()
-                                                //.frame(width: 300, height: 300)
+                                            //.frame(width: 300, height: 300)
                                                 .cornerRadius(10)
                                                 .shadow(radius: 5)
                                         } placeholder: {
@@ -58,7 +58,7 @@ struct ProductScanView: View {
                                     }
                                     Spacer()
                                 }
-
+                                
                                 // Nom du produit
                                 HStack {
                                     Spacer()
@@ -68,7 +68,7 @@ struct ProductScanView: View {
                                         .padding(.bottom, 5)
                                     Spacer()
                                 }
-
+                                
                                 // Marque
                                 Text("Marque : \(product.brands)")
                                     .font(.headline)
@@ -88,7 +88,7 @@ struct ProductScanView: View {
                                     .font(.body)
                                     .lineLimit(nil)
                                     .padding(.bottom, 10)
-
+                                
                                 // Nutriments
                                 Text("Nutriments :")
                                     .font(.headline)
@@ -129,7 +129,7 @@ struct ProductScanView: View {
                         }
                         .font(.headline)
                         .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
-                        .frame(width: 200, height: 50)
+                        .frame(width: 200, height: 40)
                         .background(Color.white)
                         .cornerRadius(10)
                         .disabled(isSaving)
@@ -165,8 +165,8 @@ struct ProductScanView: View {
                                 }
                             }
                         }
-
-
+                        
+                        
                         // ProgressView affiché pendant l'enregistrement
                         if isSaving {
                             ProgressView("Enregistrement du produit...")
