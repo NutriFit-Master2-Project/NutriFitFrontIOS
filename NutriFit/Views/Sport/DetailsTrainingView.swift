@@ -26,7 +26,6 @@ struct DetailsTrainingView: View {
 
             ScrollView(.vertical) {
                 VStack {
-                    // Titre de la page
                     Text(training.name)
                         .font(.largeTitle)
                         .fontWeight(.bold)
