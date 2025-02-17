@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		090E767F2CC705C80088D895 /* ToDo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 090E767E2CC705BC0088D895 /* ToDo.txt */; };
 		095B07142C9874C3001C3597 /* NutriFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095B07132C9874C3001C3597 /* NutriFitApp.swift */; };
 		095B07182C9874C5001C3597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B07172C9874C5001C3597 /* Assets.xcassets */; };
 		095B071B2C9874C5001C3597 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 095B071A2C9874C5001C3597 /* Preview Assets.xcassets */; };
+		09706B8A2D63C000006E1236 /* ToDo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 09706B892D63BFF5006E1236 /* ToDo.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		090E767E2CC705BC0088D895 /* ToDo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 		095B07102C9874C3001C3597 /* NutriFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		095B07132C9874C3001C3597 /* NutriFitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriFitApp.swift; sourceTree = "<group>"; };
 		095B07172C9874C5001C3597 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		095B071A2C9874C5001C3597 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		09706B892D63BFF5006E1236 /* ToDo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -56,7 +56,7 @@
 		095B07122C9874C3001C3597 /* NutriFit */ = {
 			isa = PBXGroup;
 			children = (
-				090E767E2CC705BC0088D895 /* ToDo.txt */,
+				09706B892D63BFF5006E1236 /* ToDo.txt */,
 				095B07132C9874C3001C3597 /* NutriFitApp.swift */,
 				095B07172C9874C5001C3597 /* Assets.xcassets */,
 				095B07192C9874C5001C3597 /* Preview Content */,
@@ -138,7 +138,7 @@
 			files = (
 				095B071B2C9874C5001C3597 /* Preview Assets.xcassets in Resources */,
 				095B07182C9874C5001C3597 /* Assets.xcassets in Resources */,
-				090E767F2CC705C80088D895 /* ToDo.txt in Resources */,
+				09706B8A2D63C000006E1236 /* ToDo.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
