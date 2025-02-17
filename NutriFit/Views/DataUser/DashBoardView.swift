@@ -407,6 +407,9 @@ struct DashBoardView: View {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                             if let steps = json["steps"] as? Double {
                                 stepDiff = stepCount - steps
+                                if(stepDiff == 0.0) {
+                                    stepDiff = stepCount
+                                }
                             }
                             if let caloriesBurn = json["caloriesBurn"] as? Double {
                                 caloriesBurned = caloriesBurn
