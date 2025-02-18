@@ -405,18 +405,20 @@ struct DashBoardView: View {
                 if httpResponse.statusCode == 200, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            if let steps = json["steps"] as? Double {
-                                stepDiff = stepCount - steps
-                                if(stepDiff == 0.0) {
-                                    stepDiff = stepCount
-                                }
-                            }
                             if let caloriesBurn = json["caloriesBurn"] as? Double {
-                                caloriesBurned = caloriesBurn
+                                if let steps = json["steps"] as? Double {
+                                    caloriesBurned = caloriesBurn
+                                    stepDiff = stepCount - steps
+                                    if(stepDiff == 0.0) {
+                                        caloriesBurned = caloriesBurned
+                                    } else {
+                                        caloriesBurned = (caloriesBurned + (stepDiff * 0.05))
+                                    }
+                                }
                             }
                             let dataToUpdate: [String: Any] = [
                                 "calories": caloriesUsed,
-                                "caloriesBurn": Int(caloriesBurned + (stepDiff * 0.05)),
+                                "caloriesBurn": Int(caloriesBurned),
                                 "steps": stepCount
                             ]
                             updateDailyEntry(date: dateToday, data: dataToUpdate) { result in

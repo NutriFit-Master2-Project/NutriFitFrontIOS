@@ -23,30 +23,32 @@ struct MainTrainingView: View {
                         .foregroundColor(.red)
                         .padding()
                 } else {
-                    Text("Mes Entraînements")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 20)
-
-                    List(trainings) { training in
-                        Button(action: {
-                            selectedTraining = training
-                        }) {
-                            HStack {
-                                Image(training.name)
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .cornerRadius(8)
-                                VStack(alignment: .leading) {
-                                    Text(training.name)
-                                        .font(.headline)
-                                    Text(training.description)
-                                        .font(.subheadline)
+                    List {
+                        Section(header: Text("Mes Entraînements")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(.top, 20)
+                        ) {
+                            ForEach(trainings) { training in
+                                Button(action: {
+                                    selectedTraining = training
+                                }) {
+                                    HStack {
+                                        Image(training.name)
+                                            .resizable()
+                                            .frame(width: 80, height: 80)
+                                            .cornerRadius(8)
+                                        VStack(alignment: .leading) {
+                                            Text(training.name)
+                                                .font(.headline)
+                                            Text(training.description)
+                                                .font(.subheadline)
+                                        }
+                                    }
                                 }
+                                .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                             }
                         }
-                        .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
                     }
                     .scrollContentBackground(.hidden)
                 }

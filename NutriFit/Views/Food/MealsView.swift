@@ -12,12 +12,12 @@ struct MealsView: View {
     @State private var isLoading: Bool = true
     @State private var errorMessage: String? = nil
     @State private var selectedMeal: Meal? = nil
-    
+
     let dateToday: String = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            return dateFormatter.string(from: Date())
-        }()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: Date())
+    }()
 
     var body: some View {
         ZStack {
@@ -36,53 +36,55 @@ struct MealsView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
-                    Text("Mes repas")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 20)
-                    
                     List {
-                        ForEach(meals) { meal in
-                            HStack {
-                                // Image du repas
-                                if let url = URL(string: meal.image_url) {
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 50, height: 50)
-                                            .cornerRadius(5)
-                                    } placeholder: {
-                                        ProgressView()
+                        Section(header: Text("Mes repas")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(.top, 20)
+                        ) {
+                            ForEach(meals) { meal in
+                                HStack {
+                                    // Image du repas
+                                    if let url = URL(string: meal.image_url) {
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
+                                                .cornerRadius(5)
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
                                     }
-                                }
 
-                                // Info du repas
-                                VStack(alignment: .leading) {
-                                    Text(meal.name)
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    HStack(){
-                                        Text("\(meal.quantity) g ou ml   - ")
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
-                                        Text("\(Int(meal.calories)) Cal")
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
+                                    // Info du repas
+                                    VStack(alignment: .leading) {
+                                        Text(meal.name)
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                        HStack {
+                                            Text("\(meal.quantity) g ou ml")
+                                                .font(.subheadline)
+                                                .foregroundColor(.gray)
+                                            Text(" - ")
+                                                .foregroundColor(.gray)
+                                            Text("\(Int(meal.calories)) Cal")
+                                                .font(.subheadline)
+                                                .foregroundColor(.gray)
+                                        }
                                     }
                                 }
+                                .contentShape(Rectangle())
+                                .foregroundColor(.clear)
+                                .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                                .padding(.vertical, 10)
+                                .onTapGesture {
+                                    selectedMeal = meal
+                                }
                             }
-                            .contentShape(Rectangle())
-                            .foregroundColor(.clear)
-                            .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                            .padding(.vertical, 10)
-                            .onTapGesture {
-                                selectedMeal = meal
+                            .onDelete { offsets in
+                                deleteMeal(date: dateToday, at: offsets)
                             }
-                        }
-                        .onDelete { offsets in
-                            deleteMeal(date: dateToday, at: offsets)
                         }
                     }
                     .shadow(radius: 5)
@@ -106,7 +108,6 @@ struct MealsView: View {
             }
         }
     }
-    
     // Fonction pour récupérer les repas d'une journée
     func fetchMeals(date: String, completion: @escaping (Result<[Meal], Error>) -> Void) {
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
