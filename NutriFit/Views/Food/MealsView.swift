@@ -22,6 +22,7 @@ struct MealsView: View {
         return dateFormatter.string(from: Date())
     }()
 
+    // Page des repas de la journée
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -39,6 +40,7 @@ struct MealsView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
+                    // Liste des repas de la journée
                     List {
                         Section(header: Text("Mes repas")
                             .font(.largeTitle)
@@ -115,6 +117,7 @@ struct MealsView: View {
                         .cornerRadius(10)
                 }
                 .padding()
+                // Fenetre pour ajouter un repas à la main (si pas de code barre produit)
                 .sheet(isPresented: $showingAddMealAlert) {
                     VStack(spacing: 10) {
                         Text("Ajouter un repas")
@@ -268,7 +271,7 @@ struct MealsView: View {
         }.resume()
     }
 
-    // Fonction pour ajouter un repas
+    // Fonction pour ajouter un repas avec l'IA
     func infoMealIA() {
         guard let authToken = UserDefaults.standard.string(forKey: "authToken") else {
             self.errorMessage = "auth-token non disponible."
@@ -357,8 +360,8 @@ struct MealsView: View {
         }.resume()
     }
     
+    // Fonction pour enregistrer en base le repas généré par l'IA
     func saveMealIA(date: String, meal: MealIA, completion: @escaping (Result<String, Error>) -> Void) {
-        // Vérification des informations utilisateur
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Utilisateur non authentifié."])))
             return
@@ -369,13 +372,11 @@ struct MealsView: View {
             return
         }
 
-        // Création de l'URL
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals") else {
             completion(.failure(NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "URL invalide."])))
             return
         }
 
-        // Corps de la requête
         let requestBody: [String: Any] = [
             "name": meal.name,
             "calories": meal.calories,
@@ -383,7 +384,6 @@ struct MealsView: View {
             "image_url": meal.image_url ?? ""
         ]
 
-        // Configuration de la requête
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue(authToken, forHTTPHeaderField: "auth-token")
@@ -396,7 +396,6 @@ struct MealsView: View {
             return
         }
 
-        // Exécution de la requête réseau
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -408,13 +407,11 @@ struct MealsView: View {
                 return
             }
 
-            // Vérification du code de statut HTTP
             guard (200...299).contains(httpResponse.statusCode) else {
                 completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Erreur HTTP : \(httpResponse.statusCode)."])))
                 return
             }
 
-            // Traitement des données
             guard let data = data else {
                 completion(.failure(NSError(domain: "", code: -6, userInfo: [NSLocalizedDescriptionKey: "Aucune donnée reçue du serveur."])))
                 return

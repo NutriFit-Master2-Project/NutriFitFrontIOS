@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// Extension pour modifier et créer certains formats de texte pour l'appli
 extension Text {
     func customTitle1() -> Text {
         self

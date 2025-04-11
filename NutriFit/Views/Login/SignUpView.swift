@@ -16,6 +16,7 @@ struct SignUpView: View {
     @State private var isLoading: Bool = false
     @State private var isAccCreate: Bool = false
     
+    // Page d'inscription
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -133,6 +134,7 @@ struct SignUpView: View {
         }
     }
     
+    // Fonction pour inscrire l'user
     func SignUp(name : String, email: String, password: String) {
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up") else {
             print("URL invalide")
@@ -151,7 +153,6 @@ struct SignUpView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = httpBody
 
-        // Envoyer la requête via URLSession
         isLoading = true
         URLSession.shared.dataTask(with: request) { data, response, error in
             isLoading = false
@@ -160,14 +161,12 @@ struct SignUpView: View {
                 return
             }
 
-            // Gérer les données de la réponse
             if let data = data {
                 do {
                     if let httpResponse = response as? HTTPURLResponse {
                         
                         if let responseJSON = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                             
-                            // Vérifier les statuts de réussite ou d'échec
                             if httpResponse.statusCode == 200 {
                                 toastText = "Inscription réussie"
                                 showToastMessage()
@@ -187,6 +186,7 @@ struct SignUpView: View {
         }.resume()
     }
     
+    // Fonction pour afficher le message "Toast"
     func showToastMessage() {
         withAnimation {
             showToast = true

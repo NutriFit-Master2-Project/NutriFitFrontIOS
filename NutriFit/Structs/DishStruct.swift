@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Structure d'une recette généré par l'IA
 struct Dish: Codable {
     let id: String
     let name: String

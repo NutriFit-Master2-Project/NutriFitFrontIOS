@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductDetailView: View {
     let product: ProductList
 
+    // Page des informations d'un produit
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -103,6 +104,7 @@ struct ProductDetailView: View {
         }
     }
 
+    // Fonction pour la couleur du nutriscore
     func nutriScoreColor(for grade: String) -> Color {
         switch grade.lowercased() {
         case "a": return .green

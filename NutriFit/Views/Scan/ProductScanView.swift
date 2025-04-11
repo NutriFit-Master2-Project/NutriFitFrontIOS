@@ -25,7 +25,7 @@ struct ProductScanView: View {
         return dateFormatter.string(from: Date())
     }()
 
-    
+    // Page des inforations d'un produit après l'avoir scan
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)

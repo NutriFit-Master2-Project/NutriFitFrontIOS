@@ -26,6 +26,7 @@ struct DataUserView: View {
     let displayActivites = ["Sédentaire", "Actif", "Sportif"]
     let displayGoals = ["Perte de poids", "Prise de masse"]
     
+    // Page des informations personnelles
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -235,7 +236,6 @@ struct DataUserView: View {
     
     // Fonction pour enregistrer les données de l'user
     func saveUserInfo() {
-        // Récupérer les valeurs correspondantes à partir des affichages sélectionnés
         guard let selectedActivityIndex = displayActivites.firstIndex(of: selectedDisplayActivity),
               let selectedGoalIndex = displayGoals.firstIndex(of: selectedDisplayGoal) else {
             print("Erreur lors de la récupération des valeurs sélectionnées.")
@@ -244,19 +244,16 @@ struct DataUserView: View {
         let selectedActivity = activites[selectedActivityIndex]
         let selectedGoal = goals[selectedGoalIndex]
         
-        // Récupérer l'id  d'authentification depuis UserDefaults
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             print("userId manquant.")
             return
         }
         
-        // Assurer que les champs ne sont pas vides
         guard let ageInt = Double(age), let weightDouble = Double(weight), let heightDouble = Double(height) else {
             print("Veuillez remplir tous les champs correctement.")
             return
         }
         
-        // Créer le corps de la requête
         let userData: [String: Any] = [
             "id": userId,
             "age": ageInt,
@@ -267,19 +264,16 @@ struct DataUserView: View {
             "objective": selectedGoal
         ]
         
-        // Récupérer le token d'authentification depuis UserDefaults
         guard let token = UserDefaults.standard.string(forKey: "authToken") else {
             print("Token d'authentification manquant.")
             return
         }
         
-        // Créer l'URL
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/user-info") else {
             print("URL invalide.")
             return
         }
         
-        // Configurer la requête
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -292,7 +286,6 @@ struct DataUserView: View {
         }
         request.httpBody = httpBody
         
-        // Envoyer la requête via URLSession
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 DispatchQueue.main.async {
@@ -353,7 +346,7 @@ struct DataUserView: View {
         }.resume()
     }
     
-    // Fonction pour afficher à l'user les données enregistrées
+    // Fonction pour afficher à l'user les données déjà enregistrées
     func showInfoUser(apiResponse: [String: Any]) {
         if let ageValue = apiResponse["age"] as? Double {
             age = String(Int(ageValue))

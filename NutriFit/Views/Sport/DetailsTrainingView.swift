@@ -19,6 +19,7 @@ struct DetailsTrainingView: View {
     @State private var errorMessage: String? = nil
     @State private var isSuccess: Bool = false
 
+    // Page détails d'une séance d'entrainement sportif
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -104,7 +105,6 @@ struct DetailsTrainingView: View {
                             .padding()
                     }
 
-                    // Bouton enregistrement
                     Button(action: {
                         validateSession()
                     }) {
@@ -122,7 +122,7 @@ struct DetailsTrainingView: View {
         .navigationTitle("Exercices")
     }
 
-    //Fonction pour calcul les calories de la séance et l'ajouter aux caloires brulées
+    //Fonction pour calculer les calories de la séance et l'ajouter aux caloires brulées
     func validateSession() {
         let totalCalories = training.exercises.reduce(0) { sum, exercise in
             sum + exercise.calories

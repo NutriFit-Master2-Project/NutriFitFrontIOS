@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Structure d'un reaps avec code bar
 struct Meal: Identifiable, Codable {
     let id: String?
     let name: String
@@ -17,6 +18,7 @@ struct Meal: Identifiable, Codable {
     
 }
 
+// Structure d'un repas généré par IA
 struct MealIA: Identifiable, Codable {
     let id: String?
     let name: String
@@ -25,11 +27,13 @@ struct MealIA: Identifiable, Codable {
     var image_url: String?
 }
 
+// Structure d'un format de date
 struct CreatedAt: Codable {
     let _seconds: Int
     let _nanoseconds: Int
 }
 
+// Structure des informations users d'une journée
 struct DailyEntry: Decodable {
     let calories: Double
     let caloriesBurn: Double

@@ -13,6 +13,7 @@ struct MainTrainingView: View {
     @State private var errorMessage: String? = nil
     @State private var selectedTraining: TrainingProgram? = nil
 
+    // Page des différentes séances d'entrainements sportifs
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -62,6 +63,7 @@ struct MainTrainingView: View {
         }
     }
 
+    // Fonction pour récupérer les séances de sports en fonction du type d'entrainement de l'user
     func fetchUserObjectiveAndTrainings() {
         fetchUserObjective { result in
             switch result {
@@ -74,6 +76,7 @@ struct MainTrainingView: View {
         }
     }
 
+    // Fonction pour récupérer l'objectif sportif de l'user
     func fetchUserObjective(completion: @escaping (Result<String, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "authToken"),
               let userId = UserDefaults.standard.string(forKey: "userId") else {
@@ -115,6 +118,7 @@ struct MainTrainingView: View {
         }.resume()
     }
 
+    // Fonction pour récupérer les séances de sports en fonction du type d'entrainement
     func fetchTrainingsByType(type: String) {
         guard let token = UserDefaults.standard.string(forKey: "authToken") else {
             self.errorMessage = "Token d'authentification manquant."

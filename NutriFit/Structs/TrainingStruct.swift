@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Structure d'une séance sportive
 struct TrainingProgram: Codable, Identifiable {
     let id: String
     let totalCalories: Int
@@ -16,6 +17,7 @@ struct TrainingProgram: Codable, Identifiable {
     let exercises: [Exercise]
 }
 
+// Structure d'un exercice d'une séance sportive
 struct Exercise: Codable, Identifiable {
     let id = UUID()
     let name: String

@@ -17,6 +17,7 @@ struct FridgeView: View {
     @State private var recommendationDish: Dish? = nil
     @State private var showRecommendedDishView: Bool = false
 
+    // Page du frigo
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -34,6 +35,7 @@ struct FridgeView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
+                    // Liste des repas du frigo
                     List {
                         Section(header: Text("Mes Aliments")
                             .font(.largeTitle)
@@ -133,6 +135,7 @@ struct FridgeView: View {
         }
     }
 
+    // Fonction pour récupérer les repas du frigo de l'user
     func fetchProductList(completion: @escaping (Result<[ProductList], Error>) -> Void) {
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             self.errorMessage = "Utilisateur non authentifié."
@@ -164,12 +167,10 @@ struct FridgeView: View {
                 if let data = data {
                     isLoading = false
                     do {
-                        // Utilisation de JSONSerialization pour décoder la liste des produits
                         if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                             var productList: [ProductList] = []
                             
                             for json in jsonArray {
-                                // Extraire les informations de chaque produit
                                 if let _id = json["_id"] as? String,
                                    let productName = json["product_name"] as? String,
                                    let ingredientsText = json["ingredients_text"] as? String,
@@ -182,7 +183,6 @@ struct FridgeView: View {
                                    let imageUrl = json["image_url"] as? String,
                                    let nutrimentsDict = json["nutriments"] as? [String: Any] {
                                     
-                                    // Convertir nutriments
                                     let nutriments = NutrimentsListProduct(
                                         energy: nutrimentsDict["energy"] as? String ?? "0.0 kJ",
                                         energyKcal: nutrimentsDict["energy-kcal"] as? String ?? "0.0 kcal",
@@ -192,8 +192,7 @@ struct FridgeView: View {
                                         salt: nutrimentsDict["salt"] as? String ?? "0.0 g",
                                         proteins: nutrimentsDict["proteins"] as? String ?? "0.0 g"
                                     )
-                                    
-                                    // Créer le modèle `Product`
+
                                     let product = ProductList(
                                         _id: _id,
                                         productName: productName,
@@ -227,6 +226,7 @@ struct FridgeView: View {
         }.resume()
     }
     
+    // Fonction pour supprimer un repas en base
     func deleteProduct(productId: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             self.errorMessage = "Utilisateur non authentifié."
@@ -262,6 +262,7 @@ struct FridgeView: View {
         }.resume()
     }
     
+    // Fontion pour supprimer un repas sur le front et en base
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let product = productList[index]
@@ -279,6 +280,7 @@ struct FridgeView: View {
         }
     }
 
+    // Fonction pour la couleur du nutriscore
     func nutriScoreColor(for grade: String) -> Color {
         switch grade.lowercased() {
         case "a": return .green
@@ -290,6 +292,7 @@ struct FridgeView: View {
         }
     }
     
+    // Fonction pour récupérer un repas généré par l'IA en fonction des aliments du frigo
     func recommendedDishAi(productNames: [String], completion: @escaping (Result<Dish, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "authToken") else {
             completion(.failure(NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Token non disponible"])))
@@ -334,6 +337,7 @@ struct FridgeView: View {
         }.resume()
     }
     
+    // Fonction pour affichier le repas généré par l'IA
     func generateDish() {
         isGeneratingDish = true
         recommendedDishAi(productNames: listProductName) { result in

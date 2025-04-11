@@ -16,7 +16,7 @@ struct SignInView: View {
     @State private var isFirstConnection: Bool = false
     @State private var isNotFirstConnection: Bool = false
 
-
+    // Page de Connexion
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -114,6 +114,7 @@ struct SignInView: View {
         }
     }
     
+    // Fonction pour vérifier les informations de connexion
     func SignIn(email: String, password: String) {
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in") else {
             print("SignIn - URL invalide")
@@ -132,7 +133,6 @@ struct SignInView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = httpBody
 
-        // Envoyer la requête via URLSession
         isLoading = true
         URLSession.shared.dataTask(with: request) { data, response, error in
             isLoading = false
@@ -177,41 +177,37 @@ struct SignInView: View {
         }.resume()
     }
     
+    // Fonction pour afficher un message "Toast"
     func showToastMessage() {
         withAnimation {
             showToast = true
         }
     }
     
+    // Fonction pour la création du token de l'user
     func decodeJWT(token: String) -> [String: Any]? {
-        // Diviser le token en trois parties : header, payload, signature
         let segments = token.split(separator: ".")
         guard segments.count == 3 else {
             print("decodeJWT - Le token JWT est invalide")
             return nil
         }
         
-        // La partie utile est le payload (2ème segment)
         let payloadSegment = String(segments[1])
         
-        // Convertir Base64URL en Base64
         var base64Payload = payloadSegment
             .replacingOccurrences(of: "-", with: "+")
             .replacingOccurrences(of: "_", with: "/")
         
-        // Ajouter un padding si nécessaire (Base64 standard doit être un multiple de 4)
         while base64Payload.count % 4 != 0 {
             base64Payload += "="
         }
         
-        // Décoder le Base64
         guard let decodedData = Data(base64Encoded: base64Payload),
               let decodedPayload = String(data: decodedData, encoding: .utf8) else {
             print("decodeJWT - Échec du décodage du payload")
             return nil
         }
 
-        // Convertir la chaîne JSON en un dictionnaire
         guard let data = decodedPayload.data(using: .utf8),
               let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
               let payload = jsonObject as? [String: Any] else {
@@ -221,8 +217,8 @@ struct SignInView: View {
         return payload
     }
     
+    // Fonction pour récupérer les données personelles de l'user
     func fetchUserInfo(userId: String, completion: @escaping ([String: Any]?) -> Void) {
-        // Construire l'URL avec l'userId
         let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)"
         guard let url = URL(string: urlString) else {
             print("fetchUserInfo - URL invalide")
@@ -241,7 +237,6 @@ struct SignInView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(token, forHTTPHeaderField: "auth-token")
         
-        // Envoyer la requête via URLSession
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("fetchUserInfo - Erreur lors de la requête user-info : \(error.localizedDescription)")
@@ -263,6 +258,7 @@ struct SignInView: View {
         }.resume()
     }
     
+    // Fcontion pour vérifier si l'user se connecte pour la première fois
     func checkFirstConnection(apiResponse: [String: Any]) -> Bool {
         if apiResponse["activites"] is String {
             return false

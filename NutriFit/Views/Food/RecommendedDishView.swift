@@ -10,6 +10,7 @@ import SwiftUI
 struct RecommendedDishView: View {
     var dish: Dish
 
+    // Page pour les informations du repas généré par IA en fonction des aliments du frigo
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {

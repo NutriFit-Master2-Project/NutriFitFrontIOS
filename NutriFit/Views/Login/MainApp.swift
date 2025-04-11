@@ -11,8 +11,10 @@ struct MainApp: View {
     @State private var selection = 3
     @Binding var isFirstConnection: Bool
 
+    // Barre de navigation de l'application
     var body: some View {
         TabView(selection: $selection) {
+            // View de la page Sport
             NavigationView {
                 MainTrainingView()
                     .navigationTitle("Sport")

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Structure des informations d'un produit
 struct Product: Identifiable {
     let id = UUID()
     let productName: String
@@ -21,6 +22,7 @@ struct Product: Identifiable {
     let imageUrl: String
 }
 
+// Structure des nutriments d'un produit
 struct Nutriments {
     let energy: Double
     let energyKcal: Double
@@ -59,6 +61,7 @@ extension Nutriments {
     }
 }
 
+// Structure pour la liste des produits du frigo
 struct ProductList: Identifiable {
     let id = UUID()
     let _id: String
@@ -74,6 +77,7 @@ struct ProductList: Identifiable {
     let imageUrl: String
 }
 
+// Structure des nutriments pour la liste des produits du frigo
 struct NutrimentsListProduct {
     let energy: String
     let energyKcal: String

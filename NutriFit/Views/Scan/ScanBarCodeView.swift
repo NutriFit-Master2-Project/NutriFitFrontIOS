@@ -14,6 +14,7 @@ struct ScanBarCodeView: View {
     @State private var isCode: Bool = false
     @State private var isScanView: Bool = true
     
+    // Page pour scanner un produit
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -52,6 +53,7 @@ struct ScanBarCodeView: View {
         }
     }
     
+    // Fonction pour demander l'accès à la caméra
     func checkCameraAuthorizationStatus() {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
@@ -71,6 +73,7 @@ struct ScanBarCodeView: View {
     }
 }
 
+// Structure pour afficher la caméra
 struct BarcodeScannerView: UIViewControllerRepresentable {
     @Binding var scannedCode: String
     @Binding var isScanning: Bool
@@ -105,6 +108,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     }
 }
 
+// Class pour rechercher le code bar à la caméra
 class BarcodeScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     weak var delegate: BarcodeScannerViewControllerDelegate?
     var captureSession: AVCaptureSession!
@@ -164,6 +168,7 @@ class BarcodeScannerViewController: UIViewController, AVCaptureMetadataOutputObj
         }
     }
 
+    // Fonction pour récupérer le numéro du code bar
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }

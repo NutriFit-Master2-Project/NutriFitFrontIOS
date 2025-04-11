@@ -28,6 +28,7 @@ struct DayDetailView: View {
         return dateFormatterFr.string(from: day)
     }
 
+    // Page des informations utlisateur d'une journée
     var body: some View {
         ZStack {
             Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255)
@@ -45,6 +46,7 @@ struct DayDetailView: View {
                     VStack() {
                         VStack {
                             VStack {
+                                // Date de la journée
                                 VStack(alignment: .center) {
                                     Text("Détails du : ")
                                         .font(.largeTitle)
@@ -61,6 +63,7 @@ struct DayDetailView: View {
                             Spacer()
                                 .frame(height: 50)
                             
+                            // Information de l'user sur la journée
                             VStack(alignment: .leading) {
                                 HStack {
                                     Image(systemName: "flame")
@@ -185,7 +188,7 @@ struct DayDetailView: View {
         }
     }
 
-    // Fonction pour retourner les informations users pour la date donnée (meals, steps, calories)
+    // Fonction pour retourner les informations users pour la date donnée
     func fetchDailyEntry(for date: String, completion: @escaping (Result<DailyEntry, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "authToken") else {
             completion(.failure(NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Token non disponible"])))

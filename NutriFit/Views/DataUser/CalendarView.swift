@@ -18,26 +18,22 @@ struct CalendarView: View {
         return formatter
     }()
     
-    // Génère toutes les dates (y compris les espaces vides avant le début du mois)
+    // Génère toutes les dates
     var daysInMonthWithPadding: [Date?] {
         guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: currentDate)),
               let range = calendar.range(of: .day, in: .month, for: startOfMonth) else {
             return []
         }
         
-        // Obtenez le jour de la semaine du premier jour du mois
         let firstWeekday = calendar.component(.weekday, from: startOfMonth)
         let paddingDays = (firstWeekday - calendar.firstWeekday + 7) % 7
         
-        // Ajoutez les jours vides pour le début de la semaine
         let paddedDays = Array(repeating: nil as Date?, count: paddingDays)
         
-        // Génère toutes les dates du mois
         let monthDays = range.compactMap { day -> Date? in
             calendar.date(byAdding: .day, value: day - 1, to: startOfMonth)
         }
         
-        // Combinez les jours vides et les jours du mois
         return paddedDays + monthDays
     }
 
@@ -49,8 +45,9 @@ struct CalendarView: View {
         calendar.startOfDay(for: Date())
     }
 
-    let columns = Array(repeating: GridItem(.flexible()), count: 7) // 7 colonnes pour les jours de la semaine
-
+    let columns = Array(repeating: GridItem(.flexible()), count: 7)
+    
+    // Page du calendrier de l'user
     var body: some View {
         NavigationView {
             ZStack {
@@ -70,7 +67,7 @@ struct CalendarView: View {
                     VStack {
                         HStack {
                             ForEach(["L", "M", "M", "J", "V", "S", "D"], id: \.self) { day in
-                                VStack() { // Ajouter de l'espace entre le texte et la ligne
+                                VStack() {
                                     Text(day)
                                         .foregroundColor(.gray)
                                     Rectangle()

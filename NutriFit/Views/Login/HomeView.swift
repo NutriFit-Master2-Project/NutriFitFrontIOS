@@ -13,7 +13,6 @@ struct HomeView: View {
     @State private var navigateToSignIn: Bool = false
     @State private var isFirstConnection: Bool = false
     init() {
-        // Configuration de l'apparence de la barre de navigation
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(red: 40 / 255, green: 40 / 255, blue: 40 / 255, alpha: 1)
@@ -21,6 +20,7 @@ struct HomeView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
     
+    // Home page de l'application
     var body: some View {
         NavigationStack {
             ZStack {
@@ -79,6 +79,7 @@ struct HomeView: View {
         }
     }
     
+    // Fonction pour vérifier le token de connexion de l'user
     func checkIsAuth() {
         guard let token = UserDefaults.standard.string(forKey: "authToken"),
               let userId = UserDefaults.standard.string(forKey: "userId") else {
@@ -120,6 +121,7 @@ struct HomeView: View {
     }
 }
 
+// Fontion pour afficher le message "Toast" pour la connexion
 func toastView(message: String) -> some View {
     VStack {
         Spacer()
