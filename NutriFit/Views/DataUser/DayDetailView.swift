@@ -111,7 +111,15 @@ struct DayDetailView: View {
                         List(meals) { meal in
                             HStack {
                                 // Image du repas
-                                if let url = URL(string: meal.image_url) {
+                                if meal.image_url == "plateIA" {
+                                    // Afficher l'image locale
+                                    Image("plateIA")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 50)
+                                        .cornerRadius(5)
+                                } else if let url = URL(string: meal.image_url) {
+                                    // Afficher l'image distante
                                     AsyncImage(url: url) { image in
                                         image
                                             .resizable()

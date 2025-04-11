@@ -9,9 +9,13 @@ import SwiftUI
 
 struct FridgeView: View {
     @State private var productList: [ProductList] = []
+    @State private var listProductName: [String] = []
     @State private var isLoading: Bool = true
     @State private var errorMessage: String? = nil
     @State private var selectedProduct: ProductList? = nil
+    @State private var isGeneratingDish: Bool = false
+    @State private var recommendationDish: Dish? = nil
+    @State private var showRecommendedDishView: Bool = false
 
     var body: some View {
         ZStack {
@@ -30,46 +34,84 @@ struct FridgeView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
-                    Text("Mes Aliments")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 20)
                     List {
-                        ForEach(productList) { product in
-                            HStack {
-                                // Image du produit
-                                if let url = URL(string: product.imageUrl) {
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 50, height: 50)
-                                            .cornerRadius(5)
-                                    } placeholder: {
-                                        ProgressView()
+                        Section(header: Text("Mes Aliments")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(.top, 20)
+                        ) {
+                            ForEach(productList) { product in
+                                HStack {
+                                    if let url = URL(string: product.imageUrl) {
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
+                                                .cornerRadius(5)
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
                                     }
-                                }
 
-                                // Nom du produit
-                                Text(product.productName)
-                                    .font(.headline)
-                                    .foregroundColor(.white)
+                                    Text(product.productName)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                }
+                                .contentShape(Rectangle())
+                                .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
+                                .padding(.vertical, 10)
+                                .onTapGesture {
+                                    selectedProduct = product
+                                }
                             }
-                            .contentShape(Rectangle())
-                            //.foregroundColor(.clear)
-                            .listRowBackground(Color(red: 40 / 255, green: 40 / 255, blue: 40 / 255))
-                            .padding(.vertical, 10)
-                            .onTapGesture {
-                                selectedProduct = product
-                            }
+                            .onDelete(perform: deleteItems)
                         }
-                        .onDelete(perform: deleteItems)
+
+                        // Centrer le bouton horizontalement et afficher le ProgressView
+                        Section {
+                            VStack {
+                                HStack {
+                                    Spacer()
+
+                                    Button(action: {
+                                        generateDish()
+                                    }) {
+                                        Text("Générer un plat")
+                                            .font(.headline)
+                                            .foregroundColor(Color(red: 34 / 255, green: 34 / 255, blue: 34 / 255))
+                                            .frame(width: 170, height: 40)
+                                            .background(Color.white)
+                                            .cornerRadius(10)
+                                    }
+                                    .padding()
+
+                                    Spacer()
+                                }
+                                HStack {
+                                    Spacer()
+
+                                    if isGeneratingDish {
+                                        ProgressView("Génération de votre plat en cours...")
+                                            .padding()
+                                    }
+
+                                    Spacer()
+                                }
+                            }
+                            .listRowBackground(Color.clear)
+                        }
+                        .padding(.top, -20)
                     }
                     .shadow(radius: 5)
                     .scrollContentBackground(.hidden)
                     .sheet(item: $selectedProduct) { product in
                         ProductDetailView(product: product)
+                    }
+                    .sheet(isPresented: $showRecommendedDishView) {
+                        if let dish = recommendationDish {
+                            RecommendedDishView(dish: dish)
+                        }
                     }
                 }
             }
@@ -79,6 +121,7 @@ struct FridgeView: View {
                         switch result {
                         case .success(let products):
                             self.productList = products
+                            self.listProductName = products.map { $0.productName }
                             self.isLoading = false
                         case .failure(let error):
                             self.errorMessage = error.localizedDescription
@@ -227,6 +270,7 @@ struct FridgeView: View {
                     switch result {
                     case .success:
                         self.productList.remove(atOffsets: offsets)
+                        self.listProductName.remove(atOffsets: offsets)
                     case .failure(let error):
                         self.errorMessage = "Erreur lors de la suppression : \(error.localizedDescription)"
                     }
@@ -243,6 +287,66 @@ struct FridgeView: View {
         case "d": return .red
         case "e": return .red.opacity(0.8)
         default: return .gray
+        }
+    }
+    
+    func recommendedDishAi(productNames: [String], completion: @escaping (Result<Dish, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "authToken") else {
+            completion(.failure(NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Token non disponible"])))
+            return
+        }
+        
+        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/recommend-dish") else {
+            completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
+            return
+        }
+
+        let requestBody: [String: Any] = ["aliments": productNames]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody, options: []) else {
+            completion(.failure(NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Erreur de sérialisation JSON"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "auth-token")
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Données manquantes"])))
+                return
+            }
+
+            do {
+                let decoder = JSONDecoder()
+                let dish = try decoder.decode(Dish.self, from: data)
+                completion(.success(dish))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func generateDish() {
+        isGeneratingDish = true
+        recommendedDishAi(productNames: listProductName) { result in
+            DispatchQueue.main.async {
+                self.isGeneratingDish = false
+                switch result {
+                case .success(let dish):
+                    self.recommendationDish = dish
+                    self.showRecommendedDishView = true
+                case .failure(let error):
+                    self.errorMessage = "Erreur : \(error.localizedDescription)"
+                }
+            }
         }
     }
 }

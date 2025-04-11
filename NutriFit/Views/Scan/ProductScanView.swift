@@ -20,10 +20,10 @@ struct ProductScanView: View {
     @State private var isFirstConnection = false
     
     let dateToday: String = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            return dateFormatter.string(from: Date())
-        }()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: Date())
+    }()
 
     
     var body: some View {

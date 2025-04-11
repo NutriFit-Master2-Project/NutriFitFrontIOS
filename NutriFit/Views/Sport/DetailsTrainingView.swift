@@ -28,7 +28,6 @@ struct DetailsTrainingView: View {
                 VStack {
                     Text(training.name)
                         .font(.largeTitle)
-                        .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 20)
 

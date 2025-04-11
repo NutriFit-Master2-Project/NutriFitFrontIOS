@@ -8,12 +8,21 @@
 import Foundation
 
 struct Meal: Identifiable, Codable {
-    let id: String
+    let id: String?
     let name: String
     let calories: Double
     let quantity: String
-    let image_url: String
+    var image_url: String
     let createdAt: CreatedAt
+    
+}
+
+struct MealIA: Identifiable, Codable {
+    let id: String?
+    let name: String
+    let calories: Int
+    let quantity: Int
+    var image_url: String?
 }
 
 struct CreatedAt: Codable {

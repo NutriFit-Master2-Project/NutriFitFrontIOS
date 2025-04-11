@@ -38,7 +38,6 @@ struct DataUserView: View {
                             VStack {
                                 Text("Données personnelles")
                                     .font(.largeTitle)
-                                    .fontWeight(.bold)
                                     .foregroundColor(.white)
                                     .padding(.top, 20)
                             }
