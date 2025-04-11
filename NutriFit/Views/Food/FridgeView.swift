@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct FridgeView: View {
-    @State private var productList: [ProductList] = []
+    @State private var productList: [Product] = []
     @State private var listProductName: [String] = []
     @State private var isLoading: Bool = true
     @State private var errorMessage: String? = nil
-    @State private var selectedProduct: ProductList? = nil
+    @State private var selectedProduct: Product? = nil
     @State private var isGeneratingDish: Bool = false
     @State private var recommendationDish: Dish? = nil
     @State private var showRecommendedDishView: Bool = false
@@ -136,7 +136,7 @@ struct FridgeView: View {
     }
 
     // Fonction pour récupérer les repas du frigo de l'user
-    func fetchProductList(completion: @escaping (Result<[ProductList], Error>) -> Void) {
+    func fetchProductList(completion: @escaping (Result<[Product], Error>) -> Void) {
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             self.errorMessage = "Utilisateur non authentifié."
             return
@@ -168,7 +168,7 @@ struct FridgeView: View {
                     isLoading = false
                     do {
                         if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                            var productList: [ProductList] = []
+                            var productList: [Product] = []
                             
                             for json in jsonArray {
                                 if let _id = json["_id"] as? String,
@@ -183,18 +183,18 @@ struct FridgeView: View {
                                    let imageUrl = json["image_url"] as? String,
                                    let nutrimentsDict = json["nutriments"] as? [String: Any] {
                                     
-                                    let nutriments = NutrimentsListProduct(
-                                        energy: nutrimentsDict["energy"] as? String ?? "0.0 kJ",
-                                        energyKcal: nutrimentsDict["energy-kcal"] as? String ?? "0.0 kcal",
-                                        fat: nutrimentsDict["fat"] as? String ?? "0.0 g",
-                                        saturatedFat: nutrimentsDict["saturatedFat"] as? String ?? "0.0 g",
-                                        sugars: nutrimentsDict["sugars"] as? String ?? "0.0 g",
-                                        salt: nutrimentsDict["salt"] as? String ?? "0.0 g",
-                                        proteins: nutrimentsDict["proteins"] as? String ?? "0.0 g"
+                                    let nutriments = Nutriments(
+                                        energy: nutrimentsDict["energy"] as? Double ?? 0.0,
+                                        energyKcal: nutrimentsDict["energy-kcal"] as? Double ?? 0.0,
+                                        fat: nutrimentsDict["fat"] as? Double ?? 0.0,
+                                        saturatedFat: nutrimentsDict["saturatedFat"] as? Double ?? 0.0 ,
+                                        sugars: nutrimentsDict["sugars"] as? Double ?? 0.0 ,
+                                        salt: nutrimentsDict["salt"] as? Double ?? 0.0 ,
+                                        proteins: nutrimentsDict["proteins"] as? Double ?? 0.0
                                     )
 
-                                    let product = ProductList(
-                                        _id: _id,
+                                    let product = Product(
+                                        id: _id,
                                         productName: productName,
                                         ingredientsText: ingredientsText,
                                         nutriments: nutriments,
@@ -227,7 +227,7 @@ struct FridgeView: View {
     }
     
     // Fonction pour supprimer un repas en base
-    func deleteProduct(productId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func deleteProduct(productId: Any, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             self.errorMessage = "Utilisateur non authentifié."
             return
@@ -266,7 +266,11 @@ struct FridgeView: View {
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let product = productList[index]
-            deleteProduct(productId: product._id) { result in
+            guard let productId = product.id else {
+                self.errorMessage = "Identifiant du produit non valide."
+                return
+            }
+            deleteProduct(productId: productId) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:

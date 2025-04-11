@@ -166,14 +166,11 @@ struct ProductScanView: View {
                             }
                         }
                         
-                        
-                        // ProgressView affiché pendant l'enregistrement
                         if isSaving {
                             ProgressView("Enregistrement du produit...")
                                 .padding()
                         }
                         
-                        // Message d'erreur echec enregistrement
                         if let errorMessage = errorMessage {
                             Text("Erreur : \(errorMessage)")
                                 .foregroundColor(.red)
@@ -203,6 +200,7 @@ struct ProductScanView: View {
         .navigationTitle("Informations Produit")
     }
     
+    // Fonction pour récupérer les informations d'un produit
     func fetchNutritionalInfo(productId: String, completion: @escaping (Result<Product, Error>) -> Void) {
         let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/nutrition/get-nutritional-info/\(productId)"
         
@@ -228,9 +226,7 @@ struct ProductScanView: View {
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 if let data = data {
                     do {
-                        // Utilisation de JSONSerialization
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            // Extraire les informations manuellement
                             if let productName = json["product_name"] as? String,
                                let ingredientsText = json["ingredients_text"] as? String,
                                let nutriscoreGrade = json["nutriscore_grade"] as? String,
@@ -242,7 +238,6 @@ struct ProductScanView: View {
                                let imageUrl = json["image_url"] as? String,
                                let nutrimentsDict = json["nutriments"] as? [String: Any] {
                                 
-                                // Convertir nutriments
                                 let nutriments = Nutriments(
                                     energy: nutrimentsDict["energy"] as? Double ?? 0.0,
                                     energyKcal: nutrimentsDict["energy-kcal"] as? Double ?? 0.0,
@@ -253,8 +248,8 @@ struct ProductScanView: View {
                                     proteins: nutrimentsDict["proteins"] as? Double ?? 0.0
                                 )
                                 
-                                // Créer le modèle `Product`
                                 let product = Product(
+                                    id: "",
                                     productName: productName,
                                     ingredientsText: ingredientsText,
                                     nutriments: nutriments,
@@ -283,6 +278,7 @@ struct ProductScanView: View {
         }.resume()
     }
     
+    // Fonction pour enregistrer le produit scanner dans le frigo
     func saveProductFridge() {
         isSaving = true
         guard let product = product else {
@@ -349,8 +345,8 @@ struct ProductScanView: View {
         }
     }
 
+    // Fonction pour enregistrer le produit dans la consommation du jour
     func saveProductConsumes(date: String, product: Product, completion: @escaping (Result<String, Error>) -> Void) {
-        // Vérification des informations utilisateur
         guard let userId = UserDefaults.standard.string(forKey: "userId") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Utilisateur non authentifié."])))
             return
@@ -361,16 +357,13 @@ struct ProductScanView: View {
             return
         }
         
-        // Création de l'URL
         guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals") else {
             completion(.failure(NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "URL invalide."])))
             return
         }
         
-        // Calcul des calories consommées
         let caloriesEat = Double(product.nutriments.energyKcal / 100.0) * (Double(quantityNumber) ?? 0)
         
-        // Corps de la requête
         let requestBody: [String: Any] = [
             "name": product.productName,
             "calories": caloriesEat,
@@ -378,7 +371,6 @@ struct ProductScanView: View {
             "image_url": product.imageUrl
         ]
         
-        // Configuration de la requête
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue(authToken, forHTTPHeaderField: "auth-token")
@@ -391,7 +383,6 @@ struct ProductScanView: View {
             return
         }
         
-        // Exécution de la requête réseau
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -403,13 +394,11 @@ struct ProductScanView: View {
                 return
             }
             
-            // Vérification du code de statut HTTP
             guard (200...299).contains(httpResponse.statusCode) else {
                 completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Erreur HTTP : \(httpResponse.statusCode)."])))
                 return
             }
             
-            // Traitement des données
             guard let data = data else {
                 completion(.failure(NSError(domain: "", code: -6, userInfo: [NSLocalizedDescriptionKey: "Aucune donnée reçue du serveur."])))
                 return
@@ -429,6 +418,7 @@ struct ProductScanView: View {
         }.resume()
     }
 
+    // Fonction pour la couleur du nutriscore
     func nutriScoreColor(for score: String) -> Color {
         switch score.lowercased() {
         case "a", "b":

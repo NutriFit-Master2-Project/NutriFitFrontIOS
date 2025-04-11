@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProductDetailView: View {
-    let product: ProductList
+    let product: Product
 
     // Page des informations d'un produit
     var body: some View {
