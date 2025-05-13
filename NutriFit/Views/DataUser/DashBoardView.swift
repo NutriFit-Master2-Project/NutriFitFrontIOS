@@ -307,7 +307,7 @@ struct DashBoardView: View {
             return
         }
         
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info/\(userId)") else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL invalide."])))
             return
         }
@@ -387,7 +387,7 @@ struct DashBoardView: View {
             return
         }
         
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)") else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
             return
         }
@@ -457,7 +457,7 @@ struct DashBoardView: View {
             return
         }
         
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)") else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
             return
         }
@@ -506,7 +506,7 @@ struct DashBoardView: View {
             return
         }
 
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)/meals"
 
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide."])))

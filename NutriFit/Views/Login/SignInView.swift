@@ -116,7 +116,7 @@ struct SignInView: View {
     
     // Fonction pour vérifier les informations de connexion
     func SignIn(email: String, password: String) {
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/auth/sign-in") else {
             print("SignIn - URL invalide")
             return
         }
@@ -219,7 +219,7 @@ struct SignInView: View {
     
     // Fonction pour récupérer les données personelles de l'user
     func fetchUserInfo(userId: String, completion: @escaping ([String: Any]?) -> Void) {
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info/\(userId)"
         guard let url = URL(string: urlString) else {
             print("fetchUserInfo - URL invalide")
             completion(nil)

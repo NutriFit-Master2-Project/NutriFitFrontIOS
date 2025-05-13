@@ -202,7 +202,7 @@ struct ProductScanView: View {
     
     // Fonction pour récupérer les informations d'un produit
     func fetchNutritionalInfo(productId: String, completion: @escaping (Result<Product, Error>) -> Void) {
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/nutrition/get-nutritional-info/\(productId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/get-nutritional-info/\(productId)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
@@ -291,7 +291,7 @@ struct ProductScanView: View {
             return
         }
 
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/nutrition/save-product/\(userId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/save-product/\(userId)"
 
         guard let url = URL(string: urlString) else {
             errorMessage = "URL non valide."
@@ -357,7 +357,7 @@ struct ProductScanView: View {
             return
         }
         
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)/meals") else {
             completion(.failure(NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "URL invalide."])))
             return
         }

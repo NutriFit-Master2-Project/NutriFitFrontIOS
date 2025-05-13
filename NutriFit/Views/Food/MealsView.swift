@@ -183,7 +183,7 @@ struct MealsView: View {
             return
         }
 
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)/meals"
 
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
@@ -234,7 +234,7 @@ struct MealsView: View {
         
         guard let mealId = mealToDelete.id else { return }
 
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals/\(mealId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)/meals/\(mealId)"
         
 
         guard let url = URL(string: urlString) else {
@@ -288,7 +288,7 @@ struct MealsView: View {
             "Quantity": quantity
         ]
 
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/calories-food") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/calories-food") else {
             self.errorMessage = "URL non valide."
             return
         }
@@ -372,7 +372,7 @@ struct MealsView: View {
             return
         }
 
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/\(userId)/entries/\(date)/meals") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/\(userId)/entries/\(date)/meals") else {
             completion(.failure(NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "URL invalide."])))
             return
         }

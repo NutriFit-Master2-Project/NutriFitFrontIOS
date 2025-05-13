@@ -142,7 +142,7 @@ struct FridgeView: View {
             return
         }
         
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product-list/\(userId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/product-list/\(userId)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
@@ -233,7 +233,7 @@ struct FridgeView: View {
             return
         }
         
-        let urlString = "https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product/\(userId)/\(productId)"
+        let urlString = "https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/product/\(userId)/\(productId)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
@@ -303,7 +303,7 @@ struct FridgeView: View {
             return
         }
         
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/recommend-dish") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/recommend-dish") else {
             completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "URL non valide"])))
             return
         }

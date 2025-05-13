@@ -88,7 +88,7 @@ struct HomeView: View {
             return
         }
 
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/user-info/\(userId)") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info/\(userId)") else {
             print("URL invalide.")
             navigateToSignIn = true
             return

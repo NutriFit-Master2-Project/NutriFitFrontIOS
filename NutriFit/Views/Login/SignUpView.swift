@@ -136,7 +136,7 @@ struct SignUpView: View {
     
     // Fonction pour inscrire l'user
     func SignUp(name : String, email: String, password: String) {
-        guard let url = URL(string: "https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up") else {
+        guard let url = URL(string: "https://nutri-fit-back-576739684905.europe-west1.run.app/api/auth/sign-up") else {
             print("URL invalide")
             return
         }
